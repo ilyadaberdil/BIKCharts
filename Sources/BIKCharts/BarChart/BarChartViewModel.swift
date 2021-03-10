@@ -20,8 +20,8 @@ final public class BarChartViewModel: ObservableObject {
     @Published var showValueText: Bool
     @Published var showValueDescription: Bool
     @Published var direction: BarChartDirection
-
-    init(data: [CGFloat], dataDescriptions: [String?]?, calculationType: CalculationStyle, barSpacing: CGFloat, fillBarColor: Color, emptyBarColor: Color, barCornerRadius: CGFloat, showValueText: Bool, showValueDescription: Bool, direction: BarChartDirection) {
+    
+    public init(data: [CGFloat], dataDescriptions: [String?]?, calculationType: CalculationStyle, barSpacing: CGFloat, fillBarColor: Color, emptyBarColor: Color, barCornerRadius: CGFloat, showValueText: Bool, showValueDescription: Bool, direction: BarChartDirection) {
         self.data = data
         self.dataDescriptions = dataDescriptions
         self.calculationType = calculationType
@@ -35,6 +35,6 @@ final public class BarChartViewModel: ObservableObject {
     }
 }
 
-enum BarChartDirection {
+public enum BarChartDirection {
     case horizontal, vertical
 }

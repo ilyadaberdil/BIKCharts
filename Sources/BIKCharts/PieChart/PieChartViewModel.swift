@@ -8,25 +8,35 @@
 
 import SwiftUI
 
-struct BorderStyle {
-    var circumferenceBorderStrokeStyle: StrokeStyle
-    var circumferenceBorderColor: Color
+public struct BorderStyle {
+    let circumferenceBorderStrokeStyle: StrokeStyle
+    let circumferenceBorderColor: Color
+    
+    public init(circumferenceBorderStrokeStyle: StrokeStyle = .init(lineWidth: 10,
+                                                                    lineCap: .square,
+                                                                    dash: [20]),
+                circumferenceBorderColor: Color = .red) {
+        self.circumferenceBorderStrokeStyle = circumferenceBorderStrokeStyle
+        self.circumferenceBorderColor = circumferenceBorderColor
+        
+    }
 }
 
 public struct PieChartData {
-    var slice: ChartSliceDataModel
-    var titleConfiguration: TitleConfiguration = TitleConfiguration()
+    let slice: ChartSliceDataModel
+    let titleConfiguration: TitleConfiguration
+    
+    public init(slice: ChartSliceDataModel, titleConfiguration: TitleConfiguration = TitleConfiguration()) {
+        self.slice = slice
+        self.titleConfiguration = titleConfiguration
+    }
 }
 
 final public class PieChartViewModel: ObservableObject {
     @Published var data: [PieChartData]
     @Published var borderStyle: BorderStyle?
     
-    init(data: [PieChartData],
-         borderStyle: BorderStyle? = BorderStyle(circumferenceBorderStrokeStyle:.init(lineWidth: 10,
-                                                                                      lineCap: .square,
-                                                                                      dash: [20]),
-                                                 circumferenceBorderColor: .red)) {
+    public init(data: [PieChartData], borderStyle: BorderStyle? = BorderStyle()) {
         self.data = data
         self.borderStyle = borderStyle
     }

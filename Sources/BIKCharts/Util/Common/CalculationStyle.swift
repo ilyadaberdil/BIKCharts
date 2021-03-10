@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum CalculationStyle {
+public enum CalculationStyle {
     case maxValue
     case percentage
 }

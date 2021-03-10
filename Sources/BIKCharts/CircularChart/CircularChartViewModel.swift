@@ -10,16 +10,16 @@ import Foundation
 import SwiftUI
 
 final public class CircularChartViewModel: ObservableObject {
-
+    
     @Published var data: [ChartSliceDataModel]
     @Published var calculationStyle: CalculationStyle
     @Published var strokeStyle: StrokeStyle
     
-    init(data: [ChartSliceDataModel],
-         calculationStyle: CalculationStyle = .maxValue,
-         strokeStyle: StrokeStyle = .init(lineWidth: 16,
-                                          lineCap: .round,
-                                          dash: [])) {
+    public init(data: [ChartSliceDataModel],
+                calculationStyle: CalculationStyle = .maxValue,
+                strokeStyle: StrokeStyle = .init(lineWidth: 16,
+                                                 lineCap: .round,
+                                                 dash: [])) {
         self.data = data
         self.calculationStyle = calculationStyle
         self.strokeStyle = strokeStyle

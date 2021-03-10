@@ -16,8 +16,14 @@ struct PieSliceViewModel {
     var titleConfiguration: TitleConfiguration = TitleConfiguration()
 }
 
-struct TitleConfiguration {
-    var title: String = ""
-    var foregroundColor: Color = .white
-    var font: Font = .headline
+public struct TitleConfiguration {
+    let title: String
+    let foregroundColor: Color
+    let font: Font
+    
+    public init(title: String = "", foregroundColor: Color = .white, font: Font = .headline) {
+        self.title = title
+        self.foregroundColor = foregroundColor
+        self.font = font
+    }
 }

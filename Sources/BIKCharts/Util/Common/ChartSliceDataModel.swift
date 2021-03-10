@@ -8,11 +8,11 @@
 
 import SwiftUI
 
-struct ChartSliceDataModel {
-    var value: CGFloat
-    var color: Color?
+public struct ChartSliceDataModel {
+    let value: CGFloat
+    let color: Color?
     
-    init(value: CGFloat, color: Color? = nil) {
+    public init(value: CGFloat, color: Color? = nil) {
         self.value = value
         self.color = color
     }
