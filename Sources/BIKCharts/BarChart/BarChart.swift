@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-struct BarChart: View {
-    typealias DragGestureAction = (_ data: CGFloat) -> Void
-
+public struct BarChart: View {
+    public typealias DragGestureAction = (_ data: CGFloat) -> Void
+    
     enum CalculationStyle {
         case percentage(totalValue: CGFloat)
         case max(value: CGFloat)
@@ -44,7 +44,7 @@ struct BarChart: View {
             return Const.verticalBarDescriptionLabelSize
         }
     }
-        
+    
     private func getCalculatedBarSize(proxy: GeometryProxy) -> CGSize {
         let width: CGFloat
         let height: CGFloat
@@ -76,7 +76,7 @@ struct BarChart: View {
         }
     }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { proxy in
             ZStack {
                 getDraggableView(content: {
@@ -131,43 +131,43 @@ struct BarChart: View {
     private func getDraggableView<Content: View>(content: () -> Content, proxy: GeometryProxy) -> some View {
         content()
             .gesture(DragGesture(minimumDistance: .zero, coordinateSpace: .local)
-                .onChanged { dragGesture in
-                    guard proxy.height > dragGesture.location.y &&
-                            dragGesture.location.y > .zero &&
-                            proxy.width > dragGesture.location.x &&
-                            dragGesture.location.x > .zero else {
-                        showBadgeView = false
-                        return
-                    }
-                    let barWidth = getCalculatedBarSize(proxy: proxy).width
-                    let barHeight = getCalculatedBarSize(proxy: proxy).height
-                    
-                    let index: Int
-                    if viewModel.direction == .horizontal {
-                        index = Int(floor((dragGesture.location.x + viewModel.barSpacing) / (barWidth + viewModel.barSpacing)))
-                    } else {
-                        index = Int(floor((dragGesture.location.y + viewModel.barSpacing) / (barHeight + viewModel.barSpacing)))
-                    }
-                    let safeIndex = index < .zero ? .zero : min(index, viewModel.data.count-1)
-                    
-                    let safeXPoint: CGFloat
-                    let safeYPoint: CGFloat
-                    if viewModel.direction == .horizontal {
-                        safeXPoint = dragGesture.location.x + Const.badgeViewSize.width / 2
-                        safeYPoint = proxy.height / 2
-                    } else {
-                        safeXPoint = proxy.width / 2
-                        safeYPoint = dragGesture.location.y + Const.badgeViewSize.height / 2
-                    }
-                    let safeLocation: CGPoint = .init(x: safeXPoint, y: safeYPoint)
-                    badgeValue = viewModel.data[safeIndex]
-                    badgeViewLocation = safeLocation
-                    showBadgeView = true
-                    isBadgeAppeared = true
-                    dragAction?(viewModel.data[safeIndex])
-            }.onEnded( {dragGesture in
-                showBadgeView = false
-            }))
+                        .onChanged { dragGesture in
+                            guard proxy.height > dragGesture.location.y &&
+                                    dragGesture.location.y > .zero &&
+                                    proxy.width > dragGesture.location.x &&
+                                    dragGesture.location.x > .zero else {
+                                showBadgeView = false
+                                return
+                            }
+                            let barWidth = getCalculatedBarSize(proxy: proxy).width
+                            let barHeight = getCalculatedBarSize(proxy: proxy).height
+                            
+                            let index: Int
+                            if viewModel.direction == .horizontal {
+                                index = Int(floor((dragGesture.location.x + viewModel.barSpacing) / (barWidth + viewModel.barSpacing)))
+                            } else {
+                                index = Int(floor((dragGesture.location.y + viewModel.barSpacing) / (barHeight + viewModel.barSpacing)))
+                            }
+                            let safeIndex = index < .zero ? .zero : min(index, viewModel.data.count-1)
+                            
+                            let safeXPoint: CGFloat
+                            let safeYPoint: CGFloat
+                            if viewModel.direction == .horizontal {
+                                safeXPoint = dragGesture.location.x + Const.badgeViewSize.width / 2
+                                safeYPoint = proxy.height / 2
+                            } else {
+                                safeXPoint = proxy.width / 2
+                                safeYPoint = dragGesture.location.y + Const.badgeViewSize.height / 2
+                            }
+                            let safeLocation: CGPoint = .init(x: safeXPoint, y: safeYPoint)
+                            badgeValue = viewModel.data[safeIndex]
+                            badgeViewLocation = safeLocation
+                            showBadgeView = true
+                            isBadgeAppeared = true
+                            dragAction?(viewModel.data[safeIndex])
+                        }.onEnded( {dragGesture in
+                            showBadgeView = false
+                        }))
     }
     
     private func getBadgeValueView(with proxy: GeometryProxy) -> some View {

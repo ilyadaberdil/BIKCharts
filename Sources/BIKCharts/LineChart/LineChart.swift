@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LineChart: View {
+public struct LineChart: View {
     
     @ObservedObject private var viewModel: LineChartViewModel
     
@@ -20,7 +20,7 @@ struct LineChart: View {
     @State private var animatePoints: Bool = false
     @State private var animateGradientLayer: Bool = false
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { proxy in
             getGradientOverlayIfNeeded(proxy: proxy)
                 .overlay(getLineOverlayIfNeeded(proxy: proxy))
@@ -40,7 +40,7 @@ struct LineChart: View {
                                            dash: viewModel.dashOfLine))
                 .animateOnAppear(delay: 1) {
                     animateLine.toggle()
-            }
+                }
         } else {
             EmptyView()
         }
@@ -50,11 +50,11 @@ struct LineChart: View {
         getLinePath(proxy: proxy, shouldFill: true)
             .fill((animateGradientLayer && viewModel.fillWithLinearGradient.isNotNil) ?
                     viewModel.fillWithLinearGradient! :
-                LinearGradient(gradient: .init(colors: []), startPoint: .bottom, endPoint: .bottom))
+                    LinearGradient(gradient: .init(colors: []), startPoint: .bottom, endPoint: .bottom))
             .opacity(animateGradientLayer ? 1 : 0)
             .animateOnAppear(delay: 1.5) {
                 animateGradientLayer.toggle()
-        }
+            }
     }
     
     @ViewBuilder
@@ -64,7 +64,7 @@ struct LineChart: View {
                 .opacity(animatePoints ? 1 : 0)
                 .animateOnAppear(delay: 0.5) {
                     animatePoints.toggle()
-            }
+                }
         } else {
             EmptyView()
         }

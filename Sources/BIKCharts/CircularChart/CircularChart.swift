@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-struct CircularChart: View {
+public struct CircularChart: View {
     #warning("// ColorSet'e çevir default'u")
     private enum Const {
         static let circleWholeAreaRate: CGFloat = 0.5
@@ -39,7 +39,7 @@ struct CircularChart: View {
         return viewModel.strokeStyle.lineWidth*3/2
     }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { proxy in
             ZStack {
                 ForEach(0..<sortedValues.count, id: \.self) { index in
@@ -51,9 +51,9 @@ struct CircularChart: View {
                                                                    strokeStyle: viewModel.strokeStyle))
                         .animateOnAppear(using: .linear) {
                             shouldTrim = true
-                    }
-                    .frame(width: proxy.width,
-                           height: proxy.height)
+                        }
+                        .frame(width: proxy.width,
+                               height: proxy.height)
                 }
             }
         }

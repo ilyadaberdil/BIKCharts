@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-class BarChartViewModel: ObservableObject {
+final public class BarChartViewModel: ObservableObject {
     @Published var data: [CGFloat]
     @Published var dataDescriptions: [String?]?
     @Published var calculationType: CalculationStyle

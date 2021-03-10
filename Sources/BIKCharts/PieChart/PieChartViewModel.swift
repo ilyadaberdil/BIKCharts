@@ -13,12 +13,12 @@ struct BorderStyle {
     var circumferenceBorderColor: Color
 }
 
-struct PieChartData {
+public struct PieChartData {
     var slice: ChartSliceDataModel
     var titleConfiguration: TitleConfiguration = TitleConfiguration()
 }
 
-final class PieChartViewModel: ObservableObject {
+final public class PieChartViewModel: ObservableObject {
     @Published var data: [PieChartData]
     @Published var borderStyle: BorderStyle?
     

@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct PieChart: View {
-    typealias TapAction = (PieChartData) -> Void
+public struct PieChart: View {
+    public typealias TapAction = (PieChartData) -> Void
     
     private enum Const {
         static let totalDegree: CGFloat = 360.0
@@ -37,7 +37,7 @@ struct PieChart: View {
         self.tapAction = tapAction
     }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { proxy in
             ZStack {
                 if viewModel.borderStyle != nil {
@@ -50,13 +50,13 @@ struct PieChart: View {
             .scaleEffect(shouldDraw ? 1 : 0)
         }
         .animateOnAppear(using: .spring(response: 1, dampingFraction: 0.5, blendDuration: 0.7)) {
-                shouldDraw = true
+            shouldDraw = true
         }
     }
-
+    
     private func getPieceView(at index: Int, proxy: GeometryProxy) -> some View {
         let radius = min(proxy.width, proxy.height) / 2
-
+        
         let shapeViewModel = PieShapeViewModel(startDegree: viewModel.getStartDegree(of: index),
                                                endDegree: viewModel.getEndDegree(of: index), radius: radius)
         let sliceViewModel = PieSliceViewModel(pieShapeViewModel: shapeViewModel,
@@ -72,7 +72,7 @@ struct PieChart: View {
                     tappedPieceIndex = index == tappedPieceIndex ? nil : index
                 }
                 tapAction?(viewModel.data[index])
-        }
+            }
     }
     
     private func getDescriptionPosition(size: CGSize, index:Int) -> CGPoint {
