@@ -79,7 +79,7 @@ public struct BarChart: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack {
-                if viewModel.isGestureViewEnabled {
+                if viewModel.isBadgeViewEnabled {
                     getDraggableView(content: {
                         getStackViewWithBars(proxy: proxy)
                     }, proxy: proxy)
@@ -179,7 +179,7 @@ public struct BarChart: View {
     }
     
     private func getBadgeValueView(with proxy: GeometryProxy) -> some View {
-        BadgeValueView(value: $badgeValue, direction: viewModel.direction)
+        BadgeValue(with: viewModel.badgeViewModel, direction: viewModel.direction, value: $badgeValue)
             .opacity(showBadgeView ? 1 : .zero)
             .animation(.easeIn, value: showBadgeView)
             .zIndex(999)

@@ -8,14 +8,21 @@
 
 import SwiftUI
 
-struct BadgeValueView: View {
+struct BadgeValue: View {
     @Binding var value: CGFloat
-    var direction: BarChartDirection
+    private let direction: BarChartDirection
+    private let viewModel: BadgeValueModel
+    
+    init(with viewModel: BadgeValueModel, direction: BarChartDirection, value: Binding<CGFloat>) {
+        self.viewModel = viewModel
+        self.direction = direction
+        self._value = value
+    }
     
     var body: some View {
         ZStack {
             BadgeShape()
-                .foregroundColor(.red)
+                .foregroundColor(viewModel.foregroundColor)
                 .cornerRadius(35)
                 .rotationEffect(direction == .vertical ? .degrees(90) : .zero)
             infoText
@@ -24,14 +31,15 @@ struct BadgeValueView: View {
     
     var infoText: some View {
         VStack {
-            //TODO: Make this text Bindable like value prop
-            Text("Value")
-                .underline()
+            Text(viewModel.title)
+                .underline(viewModel.showUnderline, color: viewModel.underlineColor)
                 .multilineTextAlignment(.center)
                 .font(.system(size: 10))
+                .lineLimit(1)
             Text("\(String(format: "%.1f", value))")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 10))
+                .lineLimit(1)
         }.padding()
     }
 }

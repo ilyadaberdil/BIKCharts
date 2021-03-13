@@ -19,10 +19,11 @@ final public class BarChartModel: ObservableObject, Identifiable {
     @Published public var barCornerRadius: CGFloat
     @Published public var showValueText: Bool
     @Published public var showValueDescription: Bool
-    @Published public var isGestureViewEnabled: Bool
+    @Published public var isBadgeViewEnabled: Bool
+    @Published public var badgeViewModel: BadgeValueModel
     @Published public var direction: BarChartDirection
     
-    public init(data: [CGFloat], dataDescriptions: [String?]? = nil, calculationType: CalculationStyle = .maxValue, barSpacing: CGFloat = 8, fillBarColor: Color = .orange, emptyBarColor: Color = .gray, barCornerRadius: CGFloat = .zero, showValueText: Bool = false, showValueDescription: Bool = true, isGestureViewEnabled: Bool = true, direction: BarChartDirection = .horizontal) {
+    public init(data: [CGFloat], dataDescriptions: [String?]? = nil, calculationType: CalculationStyle = .maxValue, barSpacing: CGFloat = 8, fillBarColor: Color = .orange, emptyBarColor: Color = .gray, barCornerRadius: CGFloat = .zero, showValueText: Bool = false, showValueDescription: Bool = true, isBadgeViewEnabled: Bool = true, badgeViewModel: BadgeValueModel = BadgeValueModel(), direction: BarChartDirection = .horizontal) {
         self.data = data
         self.dataDescriptions = dataDescriptions
         self.calculationType = calculationType
@@ -32,7 +33,8 @@ final public class BarChartModel: ObservableObject, Identifiable {
         self.barCornerRadius = barCornerRadius
         self.showValueText = showValueText
         self.showValueDescription = showValueDescription
-        self.isGestureViewEnabled = isGestureViewEnabled
+        self.isBadgeViewEnabled = isBadgeViewEnabled
+        self.badgeViewModel = badgeViewModel
         self.direction = direction
     }
 }
