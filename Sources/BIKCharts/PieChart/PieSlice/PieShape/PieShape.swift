@@ -10,11 +10,15 @@ import SwiftUI
 
 struct PieShape: Shape {
     
+    // MARK: - Properties
+    
     private let viewModel: PieShapeModel
     
     init(viewModel: PieShapeModel) {
         self.viewModel = viewModel
     }
+    
+    // MARK: - Path
     
     func path(in rect: CGRect) -> Path {
         Path { path in
@@ -28,6 +32,8 @@ struct PieShape: Shape {
         }
     }
 }
+
+// MARK: - Preview
 
 struct PieShape_Previews: PreviewProvider {
     static var previews: some View {

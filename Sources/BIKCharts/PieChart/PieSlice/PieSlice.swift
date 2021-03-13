@@ -8,7 +8,9 @@
 
 import SwiftUI
 
-struct PieSliceView: View {
+struct PieSlice: View {
+    
+    // MARK: - Properties
     
     private let viewModel: PieSliceModel
     
@@ -16,23 +18,36 @@ struct PieSliceView: View {
         self.viewModel = viewModel
     }
     
+    // MARK: - Body
+    
     var body: some View {
         GeometryReader { proxy in
             ZStack {
                 PieShape(viewModel: viewModel.pieShapeModel)
                     .fill(viewModel.color)
-                Text(viewModel.titleConfiguration.title)
-                    .foregroundColor(viewModel.titleConfiguration.foregroundColor)
-                    .font(viewModel.titleConfiguration.font)
-                    .position(viewModel.textPosition)
+                titleText
             }
         }
     }
 }
 
+
+// MARK: - Views
+
+private extension PieSlice {
+    var titleText: some View {
+        Text(viewModel.titleConfiguration.title)
+            .foregroundColor(viewModel.titleConfiguration.foregroundColor)
+            .font(viewModel.titleConfiguration.font)
+            .position(viewModel.textPosition)
+    }
+}
+
+// MARK: - Preview
+
 struct PieSliceView_Previews: PreviewProvider {
     static var previews: some View {
-        PieSliceView(viewModel: .init(pieShapeModel: .init(startDegree: 0,
+        PieSlice(viewModel: .init(pieShapeModel: .init(startDegree: 0,
                                                            endDegree: 90,
                                                            radius: 30),
                                       color: .red,

@@ -210,6 +210,8 @@ private extension BarChart {
     }
 }
 
+// MARK: - Preview
+
 struct BarChart_Previews: PreviewProvider {
     static var previews: some View {
         BarChart(with: .init(data: [50, 100, 150],

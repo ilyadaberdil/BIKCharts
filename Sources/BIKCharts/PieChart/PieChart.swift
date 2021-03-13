@@ -15,6 +15,8 @@ public struct PieChart: View {
         static let totalDegree: CGFloat = 360.0
     }
     
+    // MARK: - Properties
+    
     @ObservedObject private var viewModel: PieChartModel
     
     @State private var shouldDraw: Bool = false
@@ -37,6 +39,8 @@ public struct PieChart: View {
         self.tapAction = tapAction
     }
     
+    // MARK: - Body
+
     public var body: some View {
         GeometryReader { proxy in
             ZStack {
@@ -53,8 +57,13 @@ public struct PieChart: View {
             shouldDraw = true
         }
     }
+}
+
+// MARK: - Views
+
+private extension PieChart {
     
-    private func getPieceView(at index: Int, proxy: GeometryProxy) -> some View {
+    func getPieceView(at index: Int, proxy: GeometryProxy) -> some View {
         let radius = min(proxy.width, proxy.height) / 2
         
         let shapeViewModel = PieShapeModel(startDegree: viewModel.getStartDegree(of: index),
@@ -63,7 +72,7 @@ public struct PieChart: View {
                                            color: viewModel.data[index].slice.color ?? colorSet[index],
                                            textPosition: getDescriptionPosition(size: proxy.size, index: index),
                                            titleConfiguration: viewModel.data[index].titleConfiguration)
-        return PieSliceView(viewModel: sliceViewModel)
+        return PieSlice(viewModel: sliceViewModel)
             .scaleEffect(tappedPieceIndex == index ? 1.2 : 1)
             .frame(width: proxy.width,
                    height: proxy.height)
@@ -75,7 +84,19 @@ public struct PieChart: View {
             }
     }
     
-    private func getDescriptionPosition(size: CGSize, index:Int) -> CGPoint {
+    func getBorder(proxy: GeometryProxy) -> some View {
+        Circle()
+            .stroke((viewModel.borderStyle?.circumferenceBorderColor ?? Color.red),
+                    style: viewModel.borderStyle?.circumferenceBorderStrokeStyle ?? StrokeStyle())
+            .frame(width: proxy.width,
+                   height: proxy.height)
+    }
+}
+
+// MARK: - Helper
+
+private extension PieChart {
+    func getDescriptionPosition(size: CGSize, index:Int) -> CGPoint {
         let center = CGPoint(x: size.width / 2 , y: size.height / 2)
         let radius = min(size.width, size.height) / 3
         let descriptionDegree = CGFloat(viewModel.getDescriptionDegree(at: index))
@@ -84,15 +105,9 @@ public struct PieChart: View {
         let xPosition = radius * cos(descriptionDegree * (.pi / 180))
         return .init(x: center.x + xPosition, y: center.y + yPosition)
     }
-    
-    private func getBorder(proxy: GeometryProxy) -> some View {
-        Circle()
-            .stroke((viewModel.borderStyle?.circumferenceBorderColor ?? Color.red),
-                    style: viewModel.borderStyle?.circumferenceBorderStrokeStyle ?? StrokeStyle())
-            .frame(width: proxy.width,
-                   height: proxy.height)
-    }
 }
+
+// MARK: - Preview
 
 struct PieChart_Previews: PreviewProvider {
     static var previews: some View {
