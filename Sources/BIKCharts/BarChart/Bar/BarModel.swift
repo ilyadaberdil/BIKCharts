@@ -10,17 +10,17 @@ import Foundation
 import SwiftUI
 
 struct BarModel {
-    var value: CGFloat
-    var valueName: String?
-    var calculationStyle: BarChart.CalculationStyle
-    var fillBarColor: Color
-    var emptyBarColor: Color
-    var barWidth: CGFloat
-    var barHeight: CGFloat
-    var barCornerRadius: CGFloat
-    var descriptionLabelSize: CGFloat
-    var showValueText: Bool
-    var showValueDescription: Bool
+    let value: CGFloat
+    let valueName: String?
+    let calculationStyle: BarChart.CalculationStyle
+    let fillBarColor: Color
+    let emptyBarColor: Color
+    let barWidth: CGFloat
+    let barHeight: CGFloat
+    let barCornerRadius: CGFloat
+    let descriptionLabelSize: CGFloat
+    let showValueText: Bool
+    let showValueDescription: Bool
     
     init(value: CGFloat, valueName: String?, calculationStyle: BarChart.CalculationStyle, fillBarColor: Color, emptyBarColor: Color, barWidth: CGFloat, barHeight: CGFloat, barCornerRadius: CGFloat, descriptionLabelSize: CGFloat, showValueText: Bool, showValueDescription: Bool) {
         self.showValueText = showValueText
