@@ -24,6 +24,7 @@ struct BadgeValueView: View {
     
     var infoText: some View {
         VStack {
+            //TODO: Make this text Bindable like value prop
             Text("Value")
                 .underline()
                 .multilineTextAlignment(.center)
