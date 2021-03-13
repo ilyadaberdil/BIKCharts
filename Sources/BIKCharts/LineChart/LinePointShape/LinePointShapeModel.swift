@@ -1,5 +1,5 @@
 //
-//  LinePointShapeViewModel.swift
+//  LinePointShapeModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 28.07.2020.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LinePointShapeViewModel {
+struct LinePointShapeModel {
     var data: [CGFloat]
     var lineWidth: CGFloat
     var calculationStyle: CalculationStyle

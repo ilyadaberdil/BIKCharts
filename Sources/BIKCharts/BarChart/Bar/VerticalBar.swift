@@ -10,17 +10,10 @@ import SwiftUI
 
 struct VerticalBar: View {
     
-    private let viewModel: BarViewModel
+    private let viewModel: BarModel
     
-    init(viewModel: BarViewModel) {
+    init(viewModel: BarModel) {
         self.viewModel = viewModel
-    }
-  
-    private var shouldShowValueNameText: Bool {
-        if let valueName = viewModel.valueName, !valueName.isEmpty {
-            return true
-        }
-        return false
     }
     
     var body: some View {
@@ -41,13 +34,16 @@ struct VerticalBar: View {
                         Text(String(format: "%.1f", (viewModel.value)))
                             .rotationEffect(.init(radians: -.pi/2))
                             .lineLimit(1)
-                            .offset(x: 0, y: 21 - (viewModel.barHeight))
+                            .offset(x: 0, y: 50 - (viewModel.barHeight))
                             .font(.caption)
+                            .frame(width: 50)
                     }
                 }
                 
-                if shouldShowValueNameText && viewModel.showValueDescription {
-                    Text(viewModel.valueName ?? "")
+                if let valueName = viewModel.valueName,
+                   !valueName.isEmpty &&
+                    viewModel.showValueDescription {
+                    Text(valueName)
                         .frame(width: viewModel.barWidth,
                                height: viewModel.descriptionLabelSize,
                                alignment: .center)

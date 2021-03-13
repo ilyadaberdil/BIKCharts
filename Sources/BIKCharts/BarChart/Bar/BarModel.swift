@@ -1,5 +1,5 @@
 //
-//  BarViewModel.swift
+//  BarModel.swift
 //  Charts
 //
 //  Created by berdil karaçam on 12.03.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct BarViewModel {
+struct BarModel {
     var value: CGFloat
     var valueName: String?
     var calculationStyle: BarChart.CalculationStyle

@@ -1,5 +1,5 @@
 //
-//  LineChartViewModel.swift
+//  LineChartModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 28.07.2020.
@@ -8,17 +8,17 @@
 
 import SwiftUI
 
-final public class LineChartViewModel: ObservableObject {
+final public class LineChartModel: ObservableObject {
     
-    @Published var calculationStyle: CalculationStyle
-    @Published var showPoints: Bool
-    @Published var lineWidth: CGFloat
-    @Published var lineColor : Color
-    @Published var data: [CGFloat]
-    @Published var fillWithLinearGradient: LinearGradient?
-    @Published var showLineWhenFilled: Bool
-    @Published var pointColor: Color
-    @Published var dashOfLine: [CGFloat]
+    @Published public var calculationStyle: CalculationStyle
+    @Published public var showPoints: Bool
+    @Published public var lineWidth: CGFloat
+    @Published public var lineColor : Color
+    @Published public var data: [CGFloat]
+    @Published public var fillWithLinearGradient: LinearGradient?
+    @Published public var showLineWhenFilled: Bool
+    @Published public var pointColor: Color
+    @Published public var dashOfLine: [CGFloat]
     
     public init(data: [CGFloat],
                 calculationStyle: CalculationStyle,

@@ -15,7 +15,7 @@ public struct PieChart: View {
         static let totalDegree: CGFloat = 360.0
     }
     
-    @ObservedObject private var viewModel: PieChartViewModel
+    @ObservedObject private var viewModel: PieChartModel
     
     @State private var shouldDraw: Bool = false
     @State private var tappedPieceIndex: Int?
@@ -32,7 +32,7 @@ public struct PieChart: View {
         return colorSet
     }
     
-    public init(viewModel: PieChartViewModel, tapAction: TapAction? = nil) {
+    public init(viewModel: PieChartModel, tapAction: TapAction? = nil) {
         self.viewModel = viewModel
         self.tapAction = tapAction
     }
@@ -57,9 +57,9 @@ public struct PieChart: View {
     private func getPieceView(at index: Int, proxy: GeometryProxy) -> some View {
         let radius = min(proxy.width, proxy.height) / 2
         
-        let shapeViewModel = PieShapeViewModel(startDegree: viewModel.getStartDegree(of: index),
+        let shapeViewModel = PieShapeModel(startDegree: viewModel.getStartDegree(of: index),
                                                endDegree: viewModel.getEndDegree(of: index), radius: radius)
-        let sliceViewModel = PieSliceViewModel(pieShapeViewModel: shapeViewModel,
+        let sliceViewModel = PieSliceModel(pieShapeViewModel: shapeViewModel,
                                                color: viewModel.data[index].slice.color ?? colorSet[index],
                                                textPosition: getDescriptionPosition(size: proxy.size, index: index),
                                                titleConfiguration: viewModel.data[index].titleConfiguration)

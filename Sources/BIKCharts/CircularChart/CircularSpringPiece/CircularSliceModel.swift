@@ -1,5 +1,5 @@
 //
-//  CircularSpringPieceViewModel.swift
+//  CircularSliceModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 30.07.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct CircularSliceViewModel {
+struct CircularSliceModel {
     var shouldTrim: Bool
     var trim: (from: CGFloat, to: CGFloat)
     var rotationDegree: Double

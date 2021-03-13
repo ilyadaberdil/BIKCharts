@@ -1,5 +1,5 @@
 //
-//  PiePieceViewModel.swift
+//  PieSliceModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 1.08.2020.
@@ -8,9 +8,8 @@
 
 import SwiftUI
 
-//TODO: Add protocols implementation
-struct PieSliceViewModel {
-    var pieShapeViewModel: PieShapeViewModel
+struct PieSliceModel {
+    var pieShapeViewModel: PieShapeModel
     var color: Color
     var textPosition: CGPoint = .zero
     var titleConfiguration: TitleConfiguration = TitleConfiguration()

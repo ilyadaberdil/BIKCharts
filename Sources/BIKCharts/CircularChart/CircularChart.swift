@@ -10,17 +10,17 @@
 import SwiftUI
 
 public struct CircularChart: View {
-    #warning("// ColorSet'e çevir default'u")
+    // TODO: Convert default color to ColorSet
     private enum Const {
         static let circleWholeAreaRate: CGFloat = 0.5
         static let circleWholeAreaDegree: CGFloat = 180.0
         static let defaultColor: Color = .orange
     }
     
-    @ObservedObject private var viewModel: CircularChartViewModel
+    @ObservedObject private var viewModel: CircularChartModel
     @State private var shouldTrim = false
     
-    public init(with viewModel: CircularChartViewModel) {
+    public init(with viewModel: CircularChartModel) {
         self.viewModel = viewModel
     }
     
@@ -43,7 +43,7 @@ public struct CircularChart: View {
         GeometryReader { proxy in
             ZStack {
                 ForEach(0..<sortedValues.count, id: \.self) { index in
-                    CircularSliceView(with: CircularSliceViewModel(shouldTrim: shouldTrim,
+                    CircularSliceView(with: CircularSliceModel(shouldTrim: shouldTrim,
                                                                    trim: (from: .zero, to: shouldTrim ? getCalculatedValue(at: index) : .zero),
                                                                    rotationDegree: getCalculatedRotationDegree(for: getCalculatedValue(at: index)),
                                                                    padding: getCalculatedPadding(at: index, for: proxy),

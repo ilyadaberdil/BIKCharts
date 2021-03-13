@@ -10,9 +10,9 @@ import SwiftUI
 
 struct HorizontalBar: View {
     
-    private let viewModel: BarViewModel
+    private let viewModel: BarModel
     
-    init(viewModel: BarViewModel) {
+    init(viewModel: BarModel) {
         self.viewModel = viewModel
     }
     

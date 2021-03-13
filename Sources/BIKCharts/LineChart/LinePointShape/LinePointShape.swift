@@ -10,9 +10,9 @@ import SwiftUI
 
 struct LinePointShape: Shape {
     
-    private let viewModel: LinePointShapeViewModel
+    private let viewModel: LinePointShapeModel
     
-    init(viewModel: LinePointShapeViewModel) {
+    init(viewModel: LinePointShapeModel) {
         self.viewModel = viewModel
     }
     

@@ -10,9 +10,9 @@ import SwiftUI
 
 struct CircularSliceView: View {
     
-    private let viewModel: CircularSliceViewModel
+    private let viewModel: CircularSliceModel
     
-    init(with viewModel: CircularSliceViewModel) {
+    init(with viewModel: CircularSliceModel) {
         self.viewModel = viewModel
     }
     

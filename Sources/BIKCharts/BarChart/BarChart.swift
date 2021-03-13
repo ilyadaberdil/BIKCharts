@@ -22,7 +22,7 @@ public struct BarChart: View {
         static let verticalBarDescriptionLabelSize: CGFloat = 50.0
     }
     
-    @ObservedObject private var viewModel: BarChartViewModel
+    @ObservedObject private var viewModel: BarChartModel
     @State private var showBadgeView: Bool = false
     @State private var badgeValue: CGFloat = .zero
     @State private var badgeViewLocation: CGPoint = .zero
@@ -59,7 +59,7 @@ public struct BarChart: View {
         return .init(width: width, height: height)
     }
     
-    public init(with viewModel: BarChartViewModel, dragAction: DragGestureAction? = nil) {
+    public init(with viewModel: BarChartModel, dragAction: DragGestureAction? = nil) {
         self.viewModel = viewModel
         self.dragAction = dragAction
     }
@@ -93,12 +93,12 @@ public struct BarChart: View {
         }
     }
     
-    private func getBar(barViewModel: BarViewModel) -> some View {
+    private func getBar(barViewModel: BarModel) -> some View {
         viewModel.direction == .horizontal ? AnyView(VerticalBar(viewModel: barViewModel)) : AnyView(HorizontalBar(viewModel: barViewModel))
     }
     
-    private func getBarViewModel(at index: Int, proxy: GeometryProxy) -> BarViewModel {
-        BarViewModel(value: shouldFillBars ? viewModel.data[index] : .zero,
+    private func getBarViewModel(at index: Int, proxy: GeometryProxy) -> BarModel {
+        BarModel(value: shouldFillBars ? viewModel.data[index] : .zero,
                      valueName: getDescription(at: index),
                      calculationStyle: calculationStyle,
                      fillBarColor: viewModel.fillBarColor,

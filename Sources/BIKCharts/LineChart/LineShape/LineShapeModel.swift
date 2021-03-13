@@ -1,5 +1,5 @@
 //
-//  LineShapeViewModel.swift
+//  LineShapeModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 28.07.2020.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LineShapeViewModel {
+struct LineShapeModel {
     var data: [CGFloat]
     var shouldFill: Bool
     var calculationStyle: CalculationStyle

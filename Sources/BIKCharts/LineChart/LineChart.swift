@@ -10,9 +10,9 @@ import SwiftUI
 
 public struct LineChart: View {
     
-    @ObservedObject private var viewModel: LineChartViewModel
+    @ObservedObject private var viewModel: LineChartModel
     
-    public init(with viewModel: LineChartViewModel) {
+    public init(with viewModel: LineChartModel) {
         self.viewModel = viewModel
     }
     

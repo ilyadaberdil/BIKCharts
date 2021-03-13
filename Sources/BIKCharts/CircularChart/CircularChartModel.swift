@@ -1,5 +1,5 @@
 //
-//  CircularChartViewModel.swift
+//  CircularChartModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 30.07.2020.
@@ -9,11 +9,11 @@
 import Foundation
 import SwiftUI
 
-final public class CircularChartViewModel: ObservableObject {
+final public class CircularChartModel: ObservableObject {
     
-    @Published var data: [ChartSliceDataModel]
-    @Published var calculationStyle: CalculationStyle
-    @Published var strokeStyle: StrokeStyle
+    @Published public var data: [ChartSliceDataModel]
+    @Published public var calculationStyle: CalculationStyle
+    @Published public var strokeStyle: StrokeStyle
     
     public init(data: [ChartSliceDataModel],
                 calculationStyle: CalculationStyle = .maxValue,

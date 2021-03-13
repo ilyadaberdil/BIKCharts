@@ -10,9 +10,9 @@ import SwiftUI
 
 struct PieShape: Shape {
     
-    private let viewModel: PieShapeViewModel
+    private let viewModel: PieShapeModel
     
-    init(viewModel: PieShapeViewModel) {
+    init(viewModel: PieShapeModel) {
         self.viewModel = viewModel
     }
     

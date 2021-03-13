@@ -1,5 +1,5 @@
 //
-//  PieShapeViewModel.swift
+//  PieShapeModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 1.08.2020.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct PieShapeViewModel {
+struct PieShapeModel {
     let startDegree: Double
     let endDegree: Double
     let radius: CGFloat

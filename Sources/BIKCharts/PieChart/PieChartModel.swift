@@ -1,5 +1,5 @@
 //
-//  PieChartViewModel.swift
+//  PieChartModel.swift
 //  Charts
 //
 //  Created by Berdil İlyada Karacam on 10.12.2020.
@@ -32,9 +32,9 @@ public struct PieChartData {
     }
 }
 
-final public class PieChartViewModel: ObservableObject {
-    @Published var data: [PieChartData]
-    @Published var borderStyle: BorderStyle?
+final public class PieChartModel: ObservableObject {
+    @Published public var data: [PieChartData]
+    @Published public var borderStyle: BorderStyle?
     
     public init(data: [PieChartData], borderStyle: BorderStyle? = BorderStyle()) {
         self.data = data
@@ -42,7 +42,7 @@ final public class PieChartViewModel: ObservableObject {
     }
 }
 
-extension PieChartViewModel {
+extension PieChartModel {
     
     private enum Const {
         static let totalDegree: CGFloat = 360.0
