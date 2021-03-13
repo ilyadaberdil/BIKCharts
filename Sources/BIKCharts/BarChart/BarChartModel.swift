@@ -22,7 +22,7 @@ final public class BarChartModel: ObservableObject, Identifiable {
     @Published public var isGestureViewEnabled: Bool
     @Published public var direction: BarChartDirection
     
-    public init(data: [CGFloat], dataDescriptions: [String?]?, calculationType: CalculationStyle, barSpacing: CGFloat, fillBarColor: Color, emptyBarColor: Color, barCornerRadius: CGFloat, showValueText: Bool, showValueDescription: Bool, isGestureViewEnabled: Bool = false, direction: BarChartDirection) {
+    public init(data: [CGFloat], dataDescriptions: [String?]? = nil, calculationType: CalculationStyle = .maxValue, barSpacing: CGFloat = 8, fillBarColor: Color = .orange, emptyBarColor: Color = .gray, barCornerRadius: CGFloat = .zero, showValueText: Bool = false, showValueDescription: Bool = true, isGestureViewEnabled: Bool = true, direction: BarChartDirection = .horizontal) {
         self.data = data
         self.dataDescriptions = dataDescriptions
         self.calculationType = calculationType
