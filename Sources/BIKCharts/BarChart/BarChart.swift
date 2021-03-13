@@ -79,14 +79,14 @@ public struct BarChart: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack {
-                getDraggableView(content: {
-                    getStackView() {
-                        ForEach(.zero..<viewModel.data.count, id: \.self) { index in
-                            getBar(barViewModel: getBarViewModel(at: index, proxy: proxy))
-                        }
-                    }
-                }, proxy: proxy)
-                getBadgeValueView(with: proxy)
+                if viewModel.isGestureViewEnabled {
+                    getDraggableView(content: {
+                        getStackViewWithBars(proxy: proxy)
+                    }, proxy: proxy)
+                    getBadgeValueView(with: proxy)
+                } else {
+                    getStackViewWithBars(proxy: proxy)
+                }
             }.animateOnAppear {
                 shouldFillBars = true
             }
@@ -117,6 +117,14 @@ public struct BarChart: View {
             return AnyView(HStack(spacing: viewModel.barSpacing, content: content))
         case .vertical:
             return AnyView(VStack(alignment: .leading ,spacing: viewModel.barSpacing, content: content))
+        }
+    }
+    
+    private func getStackViewWithBars(proxy: GeometryProxy) -> some View {
+        getStackView() {
+            ForEach(.zero..<viewModel.data.count, id: \.self) { index in
+                getBar(barViewModel: getBarViewModel(at: index, proxy: proxy))
+            }
         }
     }
     

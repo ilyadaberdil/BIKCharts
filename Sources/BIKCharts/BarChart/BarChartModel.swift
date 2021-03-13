@@ -19,9 +19,10 @@ final public class BarChartModel: ObservableObject, Identifiable {
     @Published public var barCornerRadius: CGFloat
     @Published public var showValueText: Bool
     @Published public var showValueDescription: Bool
+    @Published public var isGestureViewEnabled: Bool
     @Published public var direction: BarChartDirection
     
-    public init(data: [CGFloat], dataDescriptions: [String?]?, calculationType: CalculationStyle, barSpacing: CGFloat, fillBarColor: Color, emptyBarColor: Color, barCornerRadius: CGFloat, showValueText: Bool, showValueDescription: Bool, direction: BarChartDirection) {
+    public init(data: [CGFloat], dataDescriptions: [String?]?, calculationType: CalculationStyle, barSpacing: CGFloat, fillBarColor: Color, emptyBarColor: Color, barCornerRadius: CGFloat, showValueText: Bool, showValueDescription: Bool, isGestureViewEnabled: Bool = false, direction: BarChartDirection) {
         self.data = data
         self.dataDescriptions = dataDescriptions
         self.calculationType = calculationType
@@ -31,6 +32,7 @@ final public class BarChartModel: ObservableObject, Identifiable {
         self.barCornerRadius = barCornerRadius
         self.showValueText = showValueText
         self.showValueDescription = showValueDescription
+        self.isGestureViewEnabled = isGestureViewEnabled
         self.direction = direction
     }
 }
