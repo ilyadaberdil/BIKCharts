@@ -31,7 +31,7 @@ public struct BarChart: View {
     //isBadgeAppeared using for set first position of badgeValueView
     @State private var isBadgeAppeared: Bool = false
     
-    var dragAction: DragGestureAction?
+    private let dragAction: DragGestureAction?
     
     var barDescriptionLabelSize: CGFloat {
         guard viewModel.showValueDescription else {
