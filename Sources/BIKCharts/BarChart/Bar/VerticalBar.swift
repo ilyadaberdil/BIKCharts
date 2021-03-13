@@ -34,9 +34,9 @@ struct VerticalBar: View {
                         Text(String(format: "%.1f", (viewModel.value)))
                             .rotationEffect(.init(radians: -.pi/2))
                             .lineLimit(1)
-                            .offset(x: 0, y: 50 - (viewModel.barHeight))
-                            .font(.caption)
-                            .frame(width: 50)
+                            .offset(x: 0, y: viewModel.barWidth - viewModel.barHeight)
+                            .font(.system(size: 10, weight: .bold))
+                            .frame(width: viewModel.barWidth, height: viewModel.barWidth - 4)
                     }
                 }
                 
