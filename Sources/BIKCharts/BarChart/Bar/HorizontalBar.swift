@@ -19,57 +19,57 @@ struct HorizontalBar: View {
     var body: some View {
         GeometryReader { proxy in
             HStack(spacing: .zero) {
-                    if viewModel.showValueDescription {
-                        if viewModel.valueName.isNotNil {
-                            Text(viewModel.valueName ?? "")
-                                .frame(width: viewModel.descriptionLabelSize,
-                                       height: viewModel.barHeight,
-                                       alignment: .leading)
-                                .layoutPriority(99)
-                                .font(.footnote)
-                        } else {
-                            Text(".")
-                                .frame(width: viewModel.descriptionLabelSize,
-                                       height: viewModel.barHeight,
-                                       alignment: .leading)
-                                .layoutPriority(99)
-                                .hidden()
-                                .font(.footnote)
-                        }
+                if viewModel.showValueDescription {
+                    if viewModel.valueName.isNotNil {
+                        Text(viewModel.valueName ?? "")
+                            .frame(width: viewModel.descriptionLabelSize,
+                                   height: viewModel.barHeight,
+                                   alignment: .leading)
+                            .layoutPriority(99)
+                            .font(.footnote)
+                    } else {
+                        Text(".")
+                            .frame(width: viewModel.descriptionLabelSize,
+                                   height: viewModel.barHeight,
+                                   alignment: .leading)
+                            .layoutPriority(99)
+                            .hidden()
+                            .font(.footnote)
                     }
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .foregroundColor(viewModel.emptyBarColor)
-                            .frame(width: viewModel.barWidth,
-                                   height: viewModel.barHeight)
-                            .cornerRadius(viewModel.barCornerRadius)
-                            .layoutPriority(100)
-                        Rectangle()
-                            .foregroundColor(viewModel.fillBarColor)
-                            .frame(width: calculateFillBarWidth(),
-                                   height: viewModel.barHeight)
-                            .cornerRadius(viewModel.barCornerRadius)
-                            .layoutPriority(100)
-                        if self.viewModel.showValueText {
-                            Text(String(format: "%.1f", (viewModel.value)))
-                                .offset(x: viewModel.barWidth - (viewModel.barWidth / 4))
-                                .lineLimit(1)
-                                .font(.caption)
-                        }
+                }
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .foregroundColor(viewModel.emptyBarColor)
+                        .frame(width: viewModel.barWidth,
+                               height: viewModel.barHeight)
+                        .cornerRadius(viewModel.barCornerRadius)
+                        .layoutPriority(100)
+                    Rectangle()
+                        .foregroundColor(viewModel.fillBarColor)
+                        .frame(width: calculateFillBarWidth(),
+                               height: viewModel.barHeight)
+                        .cornerRadius(viewModel.barCornerRadius)
+                        .layoutPriority(100)
+                    if self.viewModel.showValueText {
+                        Text(String(format: "%.1f", (viewModel.value)))
+                            .offset(x: viewModel.barWidth - (viewModel.barWidth / 4))
+                            .lineLimit(1)
+                            .font(.caption)
                     }
-                    Spacer()
-                }.animation(.default)
-            }
+                }
+                Spacer()
+            }.animation(.default)
         }
-
-        private func calculateFillBarWidth() -> CGFloat {
-            switch viewModel.calculationStyle {
-            case .max(let value):
-                return (CGFloat(viewModel.value) * viewModel.barWidth) / value
-            case .percentage(let totalValue):
-                return (CGFloat(viewModel.value) * viewModel.barWidth) / totalValue
-            }
+    }
+    
+    private func calculateFillBarWidth() -> CGFloat {
+        switch viewModel.calculationStyle {
+        case .max(let value):
+            return (CGFloat(viewModel.value) * viewModel.barWidth) / value
+        case .percentage(let totalValue):
+            return (CGFloat(viewModel.value) * viewModel.barWidth) / totalValue
         }
+    }
     
 }
 

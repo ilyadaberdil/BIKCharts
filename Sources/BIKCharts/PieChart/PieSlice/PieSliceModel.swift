@@ -9,10 +9,20 @@
 import SwiftUI
 
 struct PieSliceModel {
-    var pieShapeViewModel: PieShapeModel
-    var color: Color
-    var textPosition: CGPoint = .zero
-    var titleConfiguration: TitleConfiguration = TitleConfiguration()
+    let pieShapeModel: PieShapeModel
+    let color: Color
+    let textPosition: CGPoint
+    let titleConfiguration: TitleConfiguration
+    
+    init(pieShapeModel: PieShapeModel,
+         color: Color,
+         textPosition: CGPoint = .zero,
+         titleConfiguration: TitleConfiguration = TitleConfiguration()) {
+        self.pieShapeModel = pieShapeModel
+        self.color = color
+        self.textPosition = textPosition
+        self.titleConfiguration = titleConfiguration
+    }
 }
 
 public struct TitleConfiguration {

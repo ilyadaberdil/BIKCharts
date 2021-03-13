@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct LinePointShapeModel {
-    var data: [CGFloat]
-    var lineWidth: CGFloat
-    var calculationStyle: CalculationStyle
+    let data: [CGFloat]
+    let lineWidth: CGFloat
+    let calculationStyle: CalculationStyle
 }

@@ -10,10 +10,10 @@ import Foundation
 import SwiftUI
 
 struct CircularSliceModel {
-    var shouldTrim: Bool
-    var trim: (from: CGFloat, to: CGFloat)
-    var rotationDegree: Double
-    var padding: CGFloat
-    var color: Color
-    var strokeStyle: StrokeStyle
+    let shouldTrim: Bool
+    let trim: (from: CGFloat, to: CGFloat)
+    let rotationDegree: Double
+    let padding: CGFloat
+    let color: Color
+    let strokeStyle: StrokeStyle
 }

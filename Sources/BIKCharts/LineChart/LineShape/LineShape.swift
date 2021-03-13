@@ -21,7 +21,7 @@ struct LineShape: Shape {
             for index in 0..<viewModel.data.count {
                 let xDot = CGFloat(index) * (rect.width / CGFloat(viewModel.data.count-1))
                 let yDot = scalableHeight(of: index,
-                                               parentHeight: rect.height)
+                                          parentHeight: rect.height)
                 let point = CGPoint(x: xDot, y: yDot)
                 if index == 0 {
                     if viewModel.shouldFill {
@@ -57,11 +57,3 @@ struct LineShape: Shape {
     }
     
 }
-//
-//struct LineShape_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LineShape(viewModel: .constant(.init(data: Mock().values,
-//                                             shouldFill: false,
-//                                             calculationStyle: .maxValue)))
-//    }
-//}

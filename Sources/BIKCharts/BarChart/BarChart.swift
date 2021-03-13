@@ -99,16 +99,16 @@ public struct BarChart: View {
     
     private func getBarViewModel(at index: Int, proxy: GeometryProxy) -> BarModel {
         BarModel(value: shouldFillBars ? viewModel.data[index] : .zero,
-                     valueName: getDescription(at: index),
-                     calculationStyle: calculationStyle,
-                     fillBarColor: viewModel.fillBarColor,
-                     emptyBarColor: viewModel.emptyBarColor,
-                     barWidth: getCalculatedBarSize(proxy: proxy).width,
-                     barHeight: getCalculatedBarSize(proxy: proxy).height,
-                     barCornerRadius: viewModel.barCornerRadius,
-                     descriptionLabelSize: barDescriptionLabelSize,
-                     showValueText: viewModel.showValueText,
-                     showValueDescription: viewModel.showValueDescription)
+                 valueName: getDescription(at: index),
+                 calculationStyle: calculationStyle,
+                 fillBarColor: viewModel.fillBarColor,
+                 emptyBarColor: viewModel.emptyBarColor,
+                 barWidth: getCalculatedBarSize(proxy: proxy).width,
+                 barHeight: getCalculatedBarSize(proxy: proxy).height,
+                 barCornerRadius: viewModel.barCornerRadius,
+                 descriptionLabelSize: barDescriptionLabelSize,
+                 showValueText: viewModel.showValueText,
+                 showValueDescription: viewModel.showValueDescription)
     }
     
     private func getStackView<Content: View>(@ViewBuilder content: () -> Content) -> some View {

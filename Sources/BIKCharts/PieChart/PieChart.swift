@@ -58,11 +58,11 @@ public struct PieChart: View {
         let radius = min(proxy.width, proxy.height) / 2
         
         let shapeViewModel = PieShapeModel(startDegree: viewModel.getStartDegree(of: index),
-                                               endDegree: viewModel.getEndDegree(of: index), radius: radius)
-        let sliceViewModel = PieSliceModel(pieShapeViewModel: shapeViewModel,
-                                               color: viewModel.data[index].slice.color ?? colorSet[index],
-                                               textPosition: getDescriptionPosition(size: proxy.size, index: index),
-                                               titleConfiguration: viewModel.data[index].titleConfiguration)
+                                           endDegree: viewModel.getEndDegree(of: index), radius: radius)
+        let sliceViewModel = PieSliceModel(pieShapeModel: shapeViewModel,
+                                           color: viewModel.data[index].slice.color ?? colorSet[index],
+                                           textPosition: getDescriptionPosition(size: proxy.size, index: index),
+                                           titleConfiguration: viewModel.data[index].titleConfiguration)
         return PieSliceView(viewModel: sliceViewModel)
             .scaleEffect(tappedPieceIndex == index ? 1.2 : 1)
             .frame(width: proxy.width,

@@ -35,5 +35,5 @@ struct BarModel {
         self.barCornerRadius = barCornerRadius
         self.descriptionLabelSize = descriptionLabelSize
     }
-
+    
 }

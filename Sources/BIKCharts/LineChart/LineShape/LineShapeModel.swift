@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct LineShapeModel {
-    var data: [CGFloat]
-    var shouldFill: Bool
-    var calculationStyle: CalculationStyle
+    let data: [CGFloat]
+    let shouldFill: Bool
+    let calculationStyle: CalculationStyle
     
     init(data: [CGFloat], shouldFill: Bool, calculationStyle: CalculationStyle) {
         self.data = data

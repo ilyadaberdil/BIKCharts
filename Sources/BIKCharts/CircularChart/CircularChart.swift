@@ -44,11 +44,11 @@ public struct CircularChart: View {
             ZStack {
                 ForEach(0..<sortedValues.count, id: \.self) { index in
                     CircularSliceView(with: CircularSliceModel(shouldTrim: shouldTrim,
-                                                                   trim: (from: .zero, to: shouldTrim ? getCalculatedValue(at: index) : .zero),
-                                                                   rotationDegree: getCalculatedRotationDegree(for: getCalculatedValue(at: index)),
-                                                                   padding: getCalculatedPadding(at: index, for: proxy),
-                                                                   color: viewModel.data[index].color ?? Const.defaultColor,
-                                                                   strokeStyle: viewModel.strokeStyle))
+                                                               trim: (from: .zero, to: shouldTrim ? getCalculatedValue(at: index) : .zero),
+                                                               rotationDegree: getCalculatedRotationDegree(for: getCalculatedValue(at: index)),
+                                                               padding: getCalculatedPadding(at: index, for: proxy),
+                                                               color: viewModel.data[index].color ?? Const.defaultColor,
+                                                               strokeStyle: viewModel.strokeStyle))
                         .animateOnAppear(using: .linear) {
                             shouldTrim = true
                         }
