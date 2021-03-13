@@ -54,7 +54,7 @@ struct HorizontalBar: View {
                         Text(String(format: "%.1f", (viewModel.value)))
                             .offset(x: viewModel.barWidth - (viewModel.barWidth / 4))
                             .lineLimit(1)
-                            .font(.caption)
+                            .font(.system(size: 10, weight: .bold))
                     }
                 }
                 Spacer()
