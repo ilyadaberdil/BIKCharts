@@ -10,13 +10,25 @@ import SwiftUI
 
 struct CircularSliceView: View {
     
+    // MARK: - Properties
+
     private let viewModel: CircularSliceModel
     
     init(with viewModel: CircularSliceModel) {
         self.viewModel = viewModel
     }
     
+    // MARK: - Body
+
     var body: some View {
+        slice
+    }
+}
+
+// MARK: - Views
+
+private extension CircularSliceView {
+    var slice: some View {
         Circle()
             .trim(from: viewModel.trim.from, to: viewModel.trim.to)
             .stroke(viewModel.color,
@@ -26,6 +38,8 @@ struct CircularSliceView: View {
             .animation(.easeInOut)
     }
 }
+
+// MARK: - Preview
 
 struct CircularSpringPieceView_Previews: PreviewProvider {
     static var previews: some View {

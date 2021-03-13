@@ -17,6 +17,8 @@ public struct CircularChart: View {
         static let defaultColor: Color = .orange
     }
     
+    // MARK: - Properties
+    
     @ObservedObject private var viewModel: CircularChartModel
     @State private var shouldTrim = false
     
@@ -24,31 +26,13 @@ public struct CircularChart: View {
         self.viewModel = viewModel
     }
     
-    private var sortedValues: [CGFloat] {
-        return viewModel.data.map{$0.value}.sorted(by: >)
-    }
-    
-    private var maxValue: CGFloat {
-        guard let maxValue = viewModel.data.map({$0.value}).max() else {
-            fatalError("Cannot found maximum value!")
-        }
-        return maxValue
-    }
-    
-    private var circlePadding: CGFloat {
-        return viewModel.strokeStyle.lineWidth*3/2
-    }
+    // MARK: - Body
     
     public var body: some View {
         GeometryReader { proxy in
             ZStack {
                 ForEach(0..<sortedValues.count, id: \.self) { index in
-                    CircularSliceView(with: CircularSliceModel(shouldTrim: shouldTrim,
-                                                               trim: (from: .zero, to: shouldTrim ? getCalculatedValue(at: index) : .zero),
-                                                               rotationDegree: getCalculatedRotationDegree(for: getCalculatedValue(at: index)),
-                                                               padding: getCalculatedPadding(at: index, for: proxy),
-                                                               color: viewModel.data[index].color ?? Const.defaultColor,
-                                                               strokeStyle: viewModel.strokeStyle))
+                    getSlice(at: index, proxy: proxy)
                         .animateOnAppear(using: .linear) {
                             shouldTrim = true
                         }
@@ -58,12 +42,46 @@ public struct CircularChart: View {
             }
         }
     }
+}
+
+// MARK: - Views
+
+private extension CircularChart {
+    func getSlice(at index: Int, proxy: GeometryProxy) -> some View {
+        let model = CircularSliceModel(shouldTrim: shouldTrim,
+                                       trim: (from: .zero, to: shouldTrim ? getCalculatedValue(at: index) : .zero),
+                                       rotationDegree: getCalculatedRotationDegree(for: getCalculatedValue(at: index)),
+                                       padding: getCalculatedPadding(at: index, for: proxy),
+                                       color: viewModel.data[index].color ?? Const.defaultColor,
+                                       strokeStyle: viewModel.strokeStyle)
+        return CircularSliceView(with: model)
+    }
+}
+
+// MARK: - Helper
+
+private extension CircularChart {
     
-    private func getCalculatedPadding(at index: Int, for proxy: GeometryProxy) -> CGFloat {
+    var sortedValues: [CGFloat] {
+        return viewModel.data.map{$0.value}.sorted(by: >)
+    }
+    
+    var maxValue: CGFloat {
+        guard let maxValue = viewModel.data.map({$0.value}).max() else {
+            fatalError("Cannot found maximum value!")
+        }
+        return maxValue
+    }
+    
+    var circlePadding: CGFloat {
+        return viewModel.strokeStyle.lineWidth*3/2
+    }
+    
+    func getCalculatedPadding(at index: Int, for proxy: GeometryProxy) -> CGFloat {
         return floor(circlePadding * CGFloat(index+1))
     }
     
-    private func getCalculatedValue(at index: Int) -> CGFloat {
+    func getCalculatedValue(at index: Int) -> CGFloat {
         switch viewModel.calculationStyle {
         case .maxValue:
             let data = sortedValues[index]
@@ -78,10 +96,12 @@ public struct CircularChart: View {
         }
     }
     
-    private func getCalculatedRotationDegree(for calculatedValue: CGFloat) -> Double {
+    func getCalculatedRotationDegree(for calculatedValue: CGFloat) -> Double {
         return Double((((Const.circleWholeAreaRate/2) - (calculatedValue/2)) * Const.circleWholeAreaDegree)/Const.circleWholeAreaRate) - Double(Const.circleWholeAreaDegree)
     }
 }
+
+// MARK: - Preview
 
 struct CircularChart_Previews: PreviewProvider {
     static var previews: some View {
