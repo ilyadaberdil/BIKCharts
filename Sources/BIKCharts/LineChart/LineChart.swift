@@ -10,16 +10,19 @@ import SwiftUI
 
 public struct LineChart: View {
     
+    // MARK: - Properties
+
     @ObservedObject private var viewModel: LineChartModel
+    @State private var animateLine: Bool = false
+    @State private var animatePoints: Bool = false
+    @State private var animateGradientLayer: Bool = false
     
     public init(with viewModel: LineChartModel) {
         self.viewModel = viewModel
     }
     
-    @State private var animateLine: Bool = false
-    @State private var animatePoints: Bool = false
-    @State private var animateGradientLayer: Bool = false
-    
+    // MARK: - Body
+
     public var body: some View {
         GeometryReader { proxy in
             getGradientOverlayIfNeeded(proxy: proxy)
@@ -27,9 +30,14 @@ public struct LineChart: View {
                 .overlay(getPointOverlayIfNeeded(proxy: proxy))
         }
     }
+}
+
+// MARK: - Views
+
+private extension LineChart {
     
     @ViewBuilder
-    private func getLineOverlayIfNeeded(proxy: GeometryProxy) -> some View {
+    func getLineOverlayIfNeeded(proxy: GeometryProxy) -> some View {
         if (viewModel.showLineWhenFilled && viewModel.fillWithLinearGradient.isNotNil) ||
             viewModel.fillWithLinearGradient.isNil {
             getLinePath(proxy: proxy, shouldFill: false)
@@ -46,7 +54,7 @@ public struct LineChart: View {
         }
     }
     
-    private func getGradientOverlayIfNeeded(proxy: GeometryProxy) -> some View {
+    func getGradientOverlayIfNeeded(proxy: GeometryProxy) -> some View {
         getLinePath(proxy: proxy, shouldFill: true)
             .fill((animateGradientLayer && viewModel.fillWithLinearGradient.isNotNil) ?
                     viewModel.fillWithLinearGradient! :
@@ -58,7 +66,7 @@ public struct LineChart: View {
     }
     
     @ViewBuilder
-    private func getPointOverlayIfNeeded(proxy: GeometryProxy) -> some View {
+    func getPointOverlayIfNeeded(proxy: GeometryProxy) -> some View {
         if viewModel.showPoints {
             getPointShape(proxy: proxy)
                 .opacity(animatePoints ? 1 : 0)
@@ -70,13 +78,13 @@ public struct LineChart: View {
         }
     }
     
-    private func getLinePath(proxy: GeometryProxy, shouldFill: Bool) -> some Shape {
+    func getLinePath(proxy: GeometryProxy, shouldFill: Bool) -> some Shape {
         LineShape(viewModel: .init(data: viewModel.data,
                                    shouldFill: shouldFill,
                                    calculationStyle: viewModel.calculationStyle))
     }
     
-    private func getPointShape(proxy: GeometryProxy) -> some View {
+    func getPointShape(proxy: GeometryProxy) -> some View {
         return LinePointShape(viewModel: .init(data: viewModel.data,
                                                lineWidth: viewModel.lineWidth,
                                                calculationStyle: viewModel.calculationStyle))

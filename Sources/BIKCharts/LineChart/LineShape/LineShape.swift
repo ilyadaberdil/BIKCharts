@@ -10,11 +10,15 @@ import SwiftUI
 
 struct LineShape: Shape {
     
+    // MARK: - Properties
+    
     private let viewModel: LineShapeModel
     
     init(viewModel: LineShapeModel) {
         self.viewModel = viewModel
     }
+    
+    // MARK: - Path
     
     func path(in rect: CGRect) -> Path {
         Path { path in
@@ -40,8 +44,12 @@ struct LineShape: Shape {
             }
         }
     }
-    
-    private func scalableHeight(of index: Int, parentHeight: CGFloat) -> CGFloat {
+}
+
+// MARK: - Helper
+
+private extension LineShape {
+    func scalableHeight(of index: Int, parentHeight: CGFloat) -> CGFloat {
         switch viewModel.calculationStyle {
         case .maxValue:
             if viewModel.data[index] > parentHeight {
@@ -55,5 +63,4 @@ struct LineShape: Shape {
             return parentHeight - ((parentHeight * data) / sumOfData)
         }
     }
-    
 }

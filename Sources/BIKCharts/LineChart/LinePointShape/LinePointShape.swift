@@ -10,12 +10,16 @@ import SwiftUI
 
 struct LinePointShape: Shape {
     
+    // MARK: - Properties
+    
     private let viewModel: LinePointShapeModel
     
     init(viewModel: LinePointShapeModel) {
         self.viewModel = viewModel
     }
     
+    // MARK: - Path
+
     func path(in rect: CGRect) -> Path {
         Path { path in
             for index in 0..<viewModel.data.count {
@@ -33,12 +37,14 @@ struct LinePointShape: Shape {
                                         width: viewModel.lineWidth,
                                         height: viewModel.lineWidth))
             }
-            
-            
         }
     }
-    
-    private func scalableHeight(at index: Int, parentHeight: CGFloat) -> CGFloat {
+}
+
+// MARK: - Helper
+
+private extension LinePointShape {
+    func scalableHeight(at index: Int, parentHeight: CGFloat) -> CGFloat {
         switch viewModel.calculationStyle {
         case .maxValue:
             if viewModel.data[index] > parentHeight {
