@@ -10,59 +10,94 @@ import SwiftUI
 
 struct HorizontalBar: View {
     
+    // MARK: - Properties
+    
     private let viewModel: BarModel
     
     init(viewModel: BarModel) {
         self.viewModel = viewModel
     }
     
+    // MARK: - Body
+
     var body: some View {
         GeometryReader { proxy in
             HStack(spacing: .zero) {
-                if viewModel.showValueDescription {
-                    if viewModel.valueName.isNotNil {
-                        Text(viewModel.valueName ?? "")
-                            .frame(width: viewModel.descriptionLabelSize,
-                                   height: viewModel.barHeight,
-                                   alignment: .leading)
-                            .layoutPriority(99)
-                            .font(.footnote)
-                    } else {
-                        Text(".")
-                            .frame(width: viewModel.descriptionLabelSize,
-                                   height: viewModel.barHeight,
-                                   alignment: .leading)
-                            .layoutPriority(99)
-                            .hidden()
-                            .font(.footnote)
-                    }
-                }
+                valueDescriptionText
                 ZStack(alignment: .leading) {
-                    Rectangle()
-                        .foregroundColor(viewModel.emptyBarColor)
-                        .frame(width: viewModel.barWidth,
-                               height: viewModel.barHeight)
-                        .cornerRadius(viewModel.barCornerRadius)
-                        .layoutPriority(100)
-                    Rectangle()
-                        .foregroundColor(viewModel.fillBarColor)
-                        .frame(width: calculateFillBarWidth(),
-                               height: viewModel.barHeight)
-                        .cornerRadius(viewModel.barCornerRadius)
-                        .layoutPriority(100)
-                    if self.viewModel.showValueText {
-                        Text(String(format: "%.1f", (viewModel.value)))
-                            .offset(x: viewModel.barWidth - (viewModel.barWidth / 4))
-                            .lineLimit(1)
-                            .font(.system(size: 10, weight: .bold))
-                    }
+                    emptyRect
+                    filledRect
+                    valueText
                 }
                 Spacer()
             }.animation(.default)
         }
     }
+}
+
+// MARK: - Views
+
+private extension HorizontalBar {
     
-    private func calculateFillBarWidth() -> CGFloat {
+    var emptyRect: some View {
+        Rectangle()
+            .foregroundColor(viewModel.emptyBarColor)
+            .frame(width: viewModel.barWidth,
+                   height: viewModel.barHeight)
+            .cornerRadius(viewModel.barCornerRadius)
+            .layoutPriority(100)
+    }
+    
+    var filledRect: some View {
+        Rectangle()
+            .foregroundColor(viewModel.fillBarColor)
+            .frame(width: calculateFillBarWidth(),
+                   height: viewModel.barHeight)
+            .cornerRadius(viewModel.barCornerRadius)
+            .layoutPriority(100)
+    }
+    
+    @ViewBuilder
+    var valueText: some View {
+        if self.viewModel.showValueText {
+            Text(String(format: "%.1f", (viewModel.value)))
+                .offset(x: viewModel.barWidth - (viewModel.barWidth / 4))
+                .lineLimit(1)
+                .font(.system(size: 10, weight: .bold))
+        } else {
+            EmptyView()
+        }
+    }
+    
+    @ViewBuilder
+    var valueDescriptionText: some View {
+        if viewModel.showValueDescription {
+            if let valueName = viewModel.valueName, !valueName.isEmpty {
+                Text(valueName)
+                    .frame(width: viewModel.descriptionLabelSize,
+                           height: viewModel.barHeight,
+                           alignment: .leading)
+                    .layoutPriority(99)
+                    .font(.footnote)
+            } else {
+                Text(".")
+                    .frame(width: viewModel.descriptionLabelSize,
+                           height: viewModel.barHeight,
+                           alignment: .leading)
+                    .layoutPriority(99)
+                    .hidden()
+                    .font(.footnote)
+            }
+        } else {
+            EmptyView()
+        }
+    }
+}
+
+// MARK: - Helper
+
+private extension HorizontalBar {
+    func calculateFillBarWidth() -> CGFloat {
         switch viewModel.calculationStyle {
         case .max(let value):
             return (CGFloat(viewModel.value) * viewModel.barWidth) / value
@@ -70,8 +105,9 @@ struct HorizontalBar: View {
             return (CGFloat(viewModel.value) * viewModel.barWidth) / totalValue
         }
     }
-    
 }
+
+// MARK: - Preview
 
 struct HorizontalBar_Previews: PreviewProvider {
     static var previews: some View {

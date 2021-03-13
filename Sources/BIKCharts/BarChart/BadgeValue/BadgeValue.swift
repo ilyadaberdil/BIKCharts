@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct BadgeValue: View {
+    
+    // MARK: - Proporties
+    
     @Binding var value: CGFloat
     private let direction: BarChartDirection
     private let viewModel: BadgeValueModel
@@ -19,6 +22,8 @@ struct BadgeValue: View {
         self._value = value
     }
     
+    // MARK: - Body
+    
     var body: some View {
         ZStack {
             BadgeShape()
@@ -26,9 +31,14 @@ struct BadgeValue: View {
                 .cornerRadius(35)
                 .rotationEffect(direction == .vertical ? .degrees(90) : .zero)
             infoText
+                .padding()
         }
     }
-    
+}
+
+// MARK: - Views
+
+private extension BadgeValue {
     var infoText: some View {
         VStack {
             Text(viewModel.title)
@@ -40,6 +50,6 @@ struct BadgeValue: View {
                 .multilineTextAlignment(.center)
                 .font(.system(size: 10))
                 .lineLimit(1)
-        }.padding()
+        }
     }
 }

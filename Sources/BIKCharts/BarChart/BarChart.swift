@@ -22,6 +22,8 @@ public struct BarChart: View {
         static let verticalBarDescriptionLabelSize: CGFloat = 50.0
     }
     
+    // MARK: - Proporties
+    
     @ObservedObject private var viewModel: BarChartModel
     @State private var showBadgeView: Bool = false
     @State private var badgeValue: CGFloat = .zero
@@ -33,49 +35,13 @@ public struct BarChart: View {
     
     private let dragAction: DragGestureAction?
     
-    var barDescriptionLabelSize: CGFloat {
-        guard viewModel.showValueDescription else {
-            return .zero
-        }
-        switch viewModel.direction {
-        case .horizontal:
-            return Const.horizontalBarDescriptionLabelSize
-        case .vertical:
-            return Const.verticalBarDescriptionLabelSize
-        }
-    }
-    
-    private func getCalculatedBarSize(proxy: GeometryProxy) -> CGSize {
-        let width: CGFloat
-        let height: CGFloat
-        switch viewModel.direction {
-        case .horizontal:
-            width = (proxy.width - viewModel.barSpacing * CGFloat(viewModel.data.count-1)) / CGFloat(viewModel.data.count)
-            height = proxy.height - barDescriptionLabelSize
-        case .vertical:
-            width = proxy.width - barDescriptionLabelSize
-            height = (proxy.height - viewModel.barSpacing * CGFloat(viewModel.data.count-1)) / CGFloat(viewModel.data.count)
-        }
-        return .init(width: width, height: height)
-    }
-    
     public init(with viewModel: BarChartModel, dragAction: DragGestureAction? = nil) {
         self.viewModel = viewModel
         self.dragAction = dragAction
     }
     
-    private var calculationStyle: CalculationStyle {
-        switch viewModel.calculationType {
-        case .maxValue:
-            guard let maxValue = viewModel.data.max() else {
-                fatalError("Cannot found maximum value!")
-            }
-            return .max(value: maxValue)
-        case .percentage:
-            return .percentage(totalValue: CGFloat(viewModel.data.reduce(.zero, +)))
-        }
-    }
-    
+    // MARK: - Body
+
     public var body: some View {
         GeometryReader { proxy in
             ZStack {
@@ -92,35 +58,33 @@ public struct BarChart: View {
             }
         }
     }
+}
+
+// MARK: - Views
+
+private extension BarChart {
     
-    private func getBar(barViewModel: BarModel) -> some View {
-        viewModel.direction == .horizontal ? AnyView(VerticalBar(viewModel: barViewModel)) : AnyView(HorizontalBar(viewModel: barViewModel))
-    }
-    
-    private func getBarViewModel(at index: Int, proxy: GeometryProxy) -> BarModel {
-        BarModel(value: shouldFillBars ? viewModel.data[index] : .zero,
-                 valueName: getDescription(at: index),
-                 calculationStyle: calculationStyle,
-                 fillBarColor: viewModel.fillBarColor,
-                 emptyBarColor: viewModel.emptyBarColor,
-                 barWidth: getCalculatedBarSize(proxy: proxy).width,
-                 barHeight: getCalculatedBarSize(proxy: proxy).height,
-                 barCornerRadius: viewModel.barCornerRadius,
-                 descriptionLabelSize: barDescriptionLabelSize,
-                 showValueText: viewModel.showValueText,
-                 showValueDescription: viewModel.showValueDescription)
-    }
-    
-    private func getStackView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+    @ViewBuilder
+    func getBar(barViewModel: BarModel) -> some View {
         switch viewModel.direction {
         case .horizontal:
-            return AnyView(HStack(spacing: viewModel.barSpacing, content: content))
+            VerticalBar(viewModel: barViewModel)
         case .vertical:
-            return AnyView(VStack(alignment: .leading ,spacing: viewModel.barSpacing, content: content))
+            HorizontalBar(viewModel: barViewModel)
         }
     }
     
-    private func getStackViewWithBars(proxy: GeometryProxy) -> some View {
+    @ViewBuilder
+    func getStackView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        switch viewModel.direction {
+        case .horizontal:
+            HStack(spacing: viewModel.barSpacing, content: content)
+        case .vertical:
+            VStack(alignment: .leading ,spacing: viewModel.barSpacing, content: content)
+        }
+    }
+    
+    func getStackViewWithBars(proxy: GeometryProxy) -> some View {
         getStackView() {
             ForEach(.zero..<viewModel.data.count, id: \.self) { index in
                 getBar(barViewModel: getBarViewModel(at: index, proxy: proxy))
@@ -128,15 +92,7 @@ public struct BarChart: View {
         }
     }
     
-    private func getDescription(at index: Int) -> String? {
-        if let descriptions = viewModel.dataDescriptions, descriptions.count > index {
-            return descriptions[index]
-        } else {
-            return nil
-        }
-    }
-    
-    private func getDraggableView<Content: View>(content: () -> Content, proxy: GeometryProxy) -> some View {
+    func getDraggableView<Content: View>(content: () -> Content, proxy: GeometryProxy) -> some View {
         content()
             .gesture(DragGesture(minimumDistance: .zero, coordinateSpace: .local)
                         .onChanged { dragGesture in
@@ -178,7 +134,7 @@ public struct BarChart: View {
                         }))
     }
     
-    private func getBadgeValueView(with proxy: GeometryProxy) -> some View {
+    func getBadgeValueView(with proxy: GeometryProxy) -> some View {
         BadgeValue(with: viewModel.badgeViewModel, direction: viewModel.direction, value: $badgeValue)
             .opacity(showBadgeView ? 1 : .zero)
             .animation(.easeIn, value: showBadgeView)
@@ -187,6 +143,70 @@ public struct BarChart: View {
                    height: showBadgeView ? Const.badgeViewSize.height : .zero)
             .position(x: isBadgeAppeared ? badgeViewLocation.x - Const.badgeViewSize.width/2 : proxy.frame(in: .local).midX,
                       y: isBadgeAppeared ? badgeViewLocation.y - Const.badgeViewSize.height/2 : proxy.frame(in: .local).midY)
+    }
+}
+
+// MARK: - Helper
+
+private extension BarChart {
+    var calculationStyle: CalculationStyle {
+        switch viewModel.calculationType {
+        case .maxValue:
+            guard let maxValue = viewModel.data.max() else {
+                fatalError("Cannot found maximum value!")
+            }
+            return .max(value: maxValue)
+        case .percentage:
+            return .percentage(totalValue: CGFloat(viewModel.data.reduce(.zero, +)))
+        }
+    }
+    
+    var barDescriptionLabelSize: CGFloat {
+        guard viewModel.showValueDescription else {
+            return .zero
+        }
+        switch viewModel.direction {
+        case .horizontal:
+            return Const.horizontalBarDescriptionLabelSize
+        case .vertical:
+            return Const.verticalBarDescriptionLabelSize
+        }
+    }
+    
+    func getDescription(at index: Int) -> String? {
+        if let descriptions = viewModel.dataDescriptions, descriptions.count > index {
+            return descriptions[index]
+        } else {
+            return nil
+        }
+    }
+    
+    func getBarViewModel(at index: Int, proxy: GeometryProxy) -> BarModel {
+        BarModel(value: shouldFillBars ? viewModel.data[index] : .zero,
+                 valueName: getDescription(at: index),
+                 calculationStyle: calculationStyle,
+                 fillBarColor: viewModel.fillBarColor,
+                 emptyBarColor: viewModel.emptyBarColor,
+                 barWidth: getCalculatedBarSize(proxy: proxy).width,
+                 barHeight: getCalculatedBarSize(proxy: proxy).height,
+                 barCornerRadius: viewModel.barCornerRadius,
+                 descriptionLabelSize: barDescriptionLabelSize,
+                 showValueText: viewModel.showValueText,
+                 showValueDescription: viewModel.showValueDescription)
+    }
+    
+    func getCalculatedBarSize(proxy: GeometryProxy) -> CGSize {
+        let width: CGFloat
+        let height: CGFloat
+        switch viewModel.direction {
+        case .horizontal:
+            width = (proxy.width - viewModel.barSpacing * CGFloat(viewModel.data.count-1)) / CGFloat(viewModel.data.count)
+            height = proxy.height - barDescriptionLabelSize
+        case .vertical:
+            width = proxy.width - barDescriptionLabelSize
+            height = (proxy.height - viewModel.barSpacing * CGFloat(viewModel.data.count-1)) / CGFloat(viewModel.data.count)
+        }
+        return .init(width: width, height: height)
     }
 }
 

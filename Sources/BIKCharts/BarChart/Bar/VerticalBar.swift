@@ -10,57 +10,91 @@ import SwiftUI
 
 struct VerticalBar: View {
     
+    // MARK: - Properties
+
     private let viewModel: BarModel
     
     init(viewModel: BarModel) {
         self.viewModel = viewModel
     }
     
+    // MARK: - Body
+    
     var body: some View {
         GeometryReader { proxy in
             VStack(spacing: .zero) {
                 ZStack(alignment: .bottom) {
-                    Rectangle()
-                        .foregroundColor(viewModel.emptyBarColor)
-                        .frame(width: viewModel.barWidth,
-                               height: viewModel.barHeight)
-                        .cornerRadius(viewModel.barCornerRadius)
-                    Rectangle()
-                        .foregroundColor(viewModel.fillBarColor)
-                        .frame(width: viewModel.barWidth,
-                               height: calculateFillBarHeight())
-                        .cornerRadius(viewModel.barCornerRadius)
-                    if viewModel.showValueText {
-                        Text(String(format: "%.1f", (viewModel.value)))
-                            .rotationEffect(.init(radians: -.pi/2))
-                            .lineLimit(1)
-                            .offset(x: 0, y: viewModel.barWidth - viewModel.barHeight)
-                            .font(.system(size: 10, weight: .bold))
-                            .frame(width: viewModel.barWidth, height: viewModel.barWidth - 4)
-                    }
+                    emptyRect
+                    filledRect
+                    valueText
                 }
-                
-                if let valueName = viewModel.valueName,
-                   !valueName.isEmpty &&
-                    viewModel.showValueDescription {
-                    Text(valueName)
-                        .frame(width: viewModel.barWidth,
-                               height: viewModel.descriptionLabelSize,
-                               alignment: .center)
-                        .font(.footnote)
-                } else if viewModel.showValueDescription {
-                    Text(".")
-                        .hidden()
-                        .frame(width: viewModel.barWidth,
-                               height: viewModel.descriptionLabelSize,
-                               alignment: .center)
-                        .font(.footnote)
-                }
+                valueDescriptionText
             }.animation(.default)
         }
     }
+}
+
+// MARK: - Views
+
+private extension VerticalBar {
     
-    private func calculateFillBarHeight() -> CGFloat {
+    var emptyRect: some View {
+        Rectangle()
+            .foregroundColor(viewModel.emptyBarColor)
+            .frame(width: viewModel.barWidth,
+                   height: viewModel.barHeight)
+            .cornerRadius(viewModel.barCornerRadius)
+    }
+    
+    var filledRect: some View {
+        Rectangle()
+            .foregroundColor(viewModel.fillBarColor)
+            .frame(width: viewModel.barWidth,
+                   height: calculateFillBarHeight())
+            .cornerRadius(viewModel.barCornerRadius)
+    }
+    
+    @ViewBuilder
+    var valueText: some View {
+        if viewModel.showValueText {
+            Text(String(format: "%.1f", (viewModel.value)))
+                .rotationEffect(.init(radians: -.pi/2))
+                .lineLimit(1)
+                .offset(x: 0, y: viewModel.barWidth - viewModel.barHeight)
+                .font(.system(size: 10, weight: .bold))
+                .frame(width: viewModel.barWidth, height: viewModel.barWidth - 4)
+        } else {
+            EmptyView()
+        }
+    }
+    
+    @ViewBuilder
+    var valueDescriptionText: some View {
+        if viewModel.showValueDescription {
+            if let valueName = viewModel.valueName, !valueName.isEmpty {
+                Text(valueName)
+                    .frame(width: viewModel.barWidth,
+                           height: viewModel.descriptionLabelSize,
+                           alignment: .center)
+                    .font(.footnote)
+            } else {
+                Text(".")
+                    .hidden()
+                    .frame(width: viewModel.barWidth,
+                           height: viewModel.descriptionLabelSize,
+                           alignment: .center)
+                    .font(.footnote)
+            }
+        } else {
+            EmptyView()
+        }
+    }
+}
+
+// MARK: - Helper
+
+private extension VerticalBar {
+    func calculateFillBarHeight() -> CGFloat {
         switch viewModel.calculationStyle {
         case .max(let value):
             return (CGFloat(viewModel.value) * viewModel.barHeight) / value
@@ -68,8 +102,9 @@ struct VerticalBar: View {
             return (CGFloat(viewModel.value) * viewModel.barHeight) / totalValue
         }
     }
-    
 }
+
+// MARK: - Preview
 
 struct VerticalBar_Previews: PreviewProvider {
     static var previews: some View {
