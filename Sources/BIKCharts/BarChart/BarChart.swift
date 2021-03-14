@@ -45,11 +45,13 @@ public struct BarChart: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack {
-                if viewModel.isBadgeViewEnabled {
+                if viewModel.isBadgeViewEnabled || dragAction.isNotNil {
                     getDraggableView(content: {
                         getStackViewWithBars(proxy: proxy)
                     }, proxy: proxy)
-                    getBadgeValueView(with: proxy)
+                    if viewModel.isBadgeViewEnabled {
+                        getBadgeValueView(with: proxy)
+                    }
                 } else {
                     getStackViewWithBars(proxy: proxy)
                 }
@@ -126,8 +128,8 @@ private extension BarChart {
                             let safeLocation: CGPoint = .init(x: safeXPoint, y: safeYPoint)
                             badgeValue = viewModel.data[safeIndex]
                             badgeViewLocation = safeLocation
-                            showBadgeView = true
-                            isBadgeAppeared = true
+                            showBadgeView = viewModel.isBadgeViewEnabled
+                            isBadgeAppeared = viewModel.isBadgeViewEnabled
                             dragAction?(viewModel.data[safeIndex])
                         }.onEnded( {dragGesture in
                             showBadgeView = false
