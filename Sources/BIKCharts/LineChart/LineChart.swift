@@ -24,11 +24,9 @@ public struct LineChart: View {
     // MARK: - Body
 
     public var body: some View {
-        GeometryReader { proxy in
-            getGradientOverlayIfNeeded(proxy: proxy)
-                .overlay(getLineOverlayIfNeeded(proxy: proxy))
-                .overlay(getPointOverlayIfNeeded(proxy: proxy))
-        }
+        getGradientOverlayIfNeeded()
+            .overlay(getLineOverlayIfNeeded())
+            .overlay(getPointOverlayIfNeeded())
     }
 }
 
@@ -37,10 +35,10 @@ public struct LineChart: View {
 private extension LineChart {
     
     @ViewBuilder
-    func getLineOverlayIfNeeded(proxy: GeometryProxy) -> some View {
+    func getLineOverlayIfNeeded() -> some View {
         if (viewModel.showLineWhenFilled && viewModel.fillWithLinearGradient.isNotNil) ||
             viewModel.fillWithLinearGradient.isNil {
-            getLinePath(proxy: proxy, shouldFill: false)
+            getLinePath(shouldFill: false)
                 .trim(from: .zero, to: animateLine ? 1 : .zero)
                 .stroke(viewModel.lineColor,
                         style: StrokeStyle(lineWidth: viewModel.lineWidth,
@@ -54,8 +52,8 @@ private extension LineChart {
         }
     }
     
-    func getGradientOverlayIfNeeded(proxy: GeometryProxy) -> some View {
-        getLinePath(proxy: proxy, shouldFill: true)
+    func getGradientOverlayIfNeeded() -> some View {
+        getLinePath(shouldFill: true)
             .fill((animateGradientLayer && viewModel.fillWithLinearGradient.isNotNil) ?
                     viewModel.fillWithLinearGradient! :
                     LinearGradient(gradient: .init(colors: []), startPoint: .bottom, endPoint: .bottom))
@@ -66,9 +64,9 @@ private extension LineChart {
     }
     
     @ViewBuilder
-    func getPointOverlayIfNeeded(proxy: GeometryProxy) -> some View {
+    func getPointOverlayIfNeeded() -> some View {
         if viewModel.showPoints {
-            getPointShape(proxy: proxy)
+            getPointShape()
                 .opacity(animatePoints ? 1 : 0)
                 .animateOnAppear(delay: 0.5) {
                     animatePoints.toggle()
@@ -78,13 +76,13 @@ private extension LineChart {
         }
     }
     
-    func getLinePath(proxy: GeometryProxy, shouldFill: Bool) -> some Shape {
+    func getLinePath(shouldFill: Bool) -> some Shape {
         LineShape(viewModel: .init(data: viewModel.data,
                                    shouldFill: shouldFill,
                                    calculationStyle: viewModel.calculationStyle))
     }
     
-    func getPointShape(proxy: GeometryProxy) -> some View {
+    func getPointShape() -> some View {
         return LinePointShape(viewModel: .init(data: viewModel.data,
                                                lineWidth: viewModel.lineWidth,
                                                calculationStyle: viewModel.calculationStyle))

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final public class LineChartModel: ObservableObject {
+final public class LineChartModel: ObservableObject, Identifiable {
     
     @Published public var calculationStyle: CalculationStyle
     @Published public var showPoints: Bool
