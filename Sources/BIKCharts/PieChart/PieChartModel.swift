@@ -32,7 +32,7 @@ public struct PieChartData {
     }
 }
 
-final public class PieChartModel: ObservableObject {
+final public class PieChartModel: ObservableObject, Identifiable {
     @Published public var data: [PieChartData]
     @Published public var borderStyle: BorderStyle?
     
