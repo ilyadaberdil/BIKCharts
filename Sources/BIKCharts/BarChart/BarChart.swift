@@ -28,6 +28,7 @@ public struct BarChart: View {
     @State private var showBadgeView: Bool = false
     @State private var badgeValue: CGFloat = .zero
     @State private var badgeViewLocation: CGPoint = .zero
+    @State private var badgeViewDirection: BadgeViewDirection = .bottom
     @State private var shouldFillBars: Bool = false
     
     //isBadgeAppeared using for set first position of badgeValueView
@@ -109,25 +110,42 @@ private extension BarChart {
                             let barHeight = getCalculatedBarSize(proxy: proxy).height
                             
                             let index: Int
-                            if viewModel.direction == .horizontal {
-                                index = Int(floor((dragGesture.location.x + viewModel.barSpacing) / (barWidth + viewModel.barSpacing)))
-                            } else {
-                                index = Int(floor((dragGesture.location.y + viewModel.barSpacing) / (barHeight + viewModel.barSpacing)))
-                            }
-                            let safeIndex = index < .zero ? .zero : min(index, viewModel.data.count-1)
+                            let safeIndex: Int
                             
                             let safeXPoint: CGFloat
                             let safeYPoint: CGFloat
+                            
                             if viewModel.direction == .horizontal {
+                                index = Int(floor((dragGesture.location.x + viewModel.barSpacing) / (barWidth + viewModel.barSpacing)))
+                                safeIndex = index < .zero ? .zero : min(index, viewModel.data.count-1)
+                                let fillBarSize = calculateFillBarSize(barSize: getCalculatedBarSize(proxy: proxy),
+                                                                       value: viewModel.data[index],
+                                                                       calculationStyle: calculationStyle)
+                                withAnimation {
+                                    badgeViewDirection = fillBarSize > proxy.height / 2 ? .top : .bottom
+                                }
                                 safeXPoint = dragGesture.location.x + Const.badgeViewSize.width / 2
-                                safeYPoint = proxy.height / 2
+                                safeYPoint = (proxy.height - fillBarSize - barDescriptionLabelSize) +
+                                    (badgeViewDirection == .top ? Const.badgeViewSize.height : .zero)
                             } else {
-                                safeXPoint = proxy.width / 2
+                                index = Int(floor((dragGesture.location.y + viewModel.barSpacing) / (barHeight + viewModel.barSpacing)))
+                                safeIndex = index < .zero ? .zero : min(index, viewModel.data.count-1)
+                                let fillBarSize = calculateFillBarSize(barSize: getCalculatedBarSize(proxy: proxy),
+                                                                       value: viewModel.data[index],
+                                                                       calculationStyle: calculationStyle)
+                                withAnimation {
+                                    badgeViewDirection = fillBarSize > proxy.width / 2 ? .right : .left
+                                }
+                                safeXPoint = fillBarSize + barDescriptionLabelSize +
+                                    (badgeViewDirection == .left ? Const.badgeViewSize.height : .zero)
                                 safeYPoint = dragGesture.location.y + Const.badgeViewSize.height / 2
                             }
                             let safeLocation: CGPoint = .init(x: safeXPoint, y: safeYPoint)
+                            
                             badgeValue = viewModel.data[safeIndex]
-                            badgeViewLocation = safeLocation
+                            withAnimation {
+                                badgeViewLocation = safeLocation
+                            }
                             showBadgeView = viewModel.isBadgeViewEnabled
                             isBadgeAppeared = viewModel.isBadgeViewEnabled
                             dragAction?(viewModel.data[safeIndex])
@@ -137,7 +155,7 @@ private extension BarChart {
     }
     
     func getBadgeValueView(with proxy: GeometryProxy) -> some View {
-        BadgeValue(with: viewModel.badgeViewModel, direction: viewModel.direction, value: $badgeValue)
+        BadgeValue(with: viewModel.badgeViewModel, direction: badgeViewDirection, value: $badgeValue)
             .opacity(showBadgeView ? 1 : .zero)
             .animation(.easeIn, value: showBadgeView)
             .zIndex(999)
@@ -154,9 +172,7 @@ private extension BarChart {
     var calculationStyle: CalculationStyle {
         switch viewModel.calculationType {
         case .maxValue:
-            guard let maxValue = viewModel.data.max() else {
-                fatalError("Cannot found maximum value!")
-            }
+            let maxValue = viewModel.data.max() ?? .zero
             return .max(value: maxValue)
         case .percentage:
             return .percentage(totalValue: CGFloat(viewModel.data.reduce(.zero, +)))
@@ -210,6 +226,27 @@ private extension BarChart {
         }
         return .init(width: width, height: height)
     }
+    
+    func calculateFillBarSize(barSize: CGSize, value: CGFloat, calculationStyle: CalculationStyle) -> CGFloat {
+        switch calculationStyle {
+        case .max(let maxValue):
+            switch viewModel.direction {
+            case .horizontal:
+                return (value * barSize.height) / maxValue
+            case .vertical:
+                return (value * barSize.width) / maxValue
+            }
+        case .percentage(let totalValue):
+            switch viewModel.direction {
+            case .horizontal:
+                return (value * barSize.height) / totalValue
+            case .vertical:
+                return (value * barSize.width) / totalValue
+            }
+        }
+    }
+    
+    
 }
 
 // MARK: - Preview

@@ -22,10 +22,9 @@ struct LineShape: Shape {
     
     func path(in rect: CGRect) -> Path {
         Path { path in
-            for index in 0..<viewModel.data.count {
+            for (index, value) in viewModel.data.enumerated() {
                 let xDot = CGFloat(index) * (rect.width / CGFloat(viewModel.data.count-1))
-                let yDot = scalableHeight(of: index,
-                                          parentHeight: rect.height)
+                let yDot = scalableHeight(for: value, parentHeight: rect.height)
                 let point = CGPoint(x: xDot, y: yDot)
                 if index == 0 {
                     if viewModel.shouldFill {
@@ -49,18 +48,21 @@ struct LineShape: Shape {
 // MARK: - Helper
 
 private extension LineShape {
-    func scalableHeight(of index: Int, parentHeight: CGFloat) -> CGFloat {
+    var maxValue: CGFloat {
+        return viewModel.data.max() ?? .zero
+    }
+    
+    func scalableHeight(for value: CGFloat, parentHeight: CGFloat) -> CGFloat {
         switch viewModel.calculationStyle {
         case .maxValue:
-            if viewModel.data[index] > parentHeight {
-                return 0
+            if value == maxValue {
+                return .zero
             } else {
-                return  parentHeight - viewModel.data[index]
+                return parentHeight - ((parentHeight * value) / maxValue)
             }
         case .percentage:
-            let sumOfData = viewModel.data.reduce(0, +)
-            let data = viewModel.data[index]
-            return parentHeight - ((parentHeight * data) / sumOfData)
+            let sumOfData = viewModel.data.reduce(.zero, +)
+            return parentHeight - ((parentHeight * value) / sumOfData)
         }
     }
 }
