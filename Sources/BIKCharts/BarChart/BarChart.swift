@@ -124,7 +124,9 @@ private extension BarChart {
                                 withAnimation {
                                     badgeViewDirection = fillBarSize > proxy.height / 2 ? .top : .bottom
                                 }
-                                safeXPoint = dragGesture.location.x + Const.badgeViewSize.width / 2
+                                let totalSpacing: CGFloat = CGFloat(index)*viewModel.barSpacing
+                                let totalBarSize: CGFloat = CGFloat(index*Int(barWidth)) + barWidth/2
+                                safeXPoint = totalBarSize + totalSpacing + Const.badgeViewSize.width / 2
                                 safeYPoint = (proxy.height - fillBarSize - barDescriptionLabelSize) +
                                     (badgeViewDirection == .top ? Const.badgeViewSize.height : .zero)
                             } else {
@@ -136,9 +138,11 @@ private extension BarChart {
                                 withAnimation {
                                     badgeViewDirection = fillBarSize > proxy.width / 2 ? .right : .left
                                 }
+                                let totalSpacing: CGFloat = CGFloat(index)*viewModel.barSpacing
+                                let totalBarSize: CGFloat = CGFloat(index*Int(barHeight)) + barHeight/2
                                 safeXPoint = fillBarSize + barDescriptionLabelSize +
                                     (badgeViewDirection == .left ? Const.badgeViewSize.height : .zero)
-                                safeYPoint = dragGesture.location.y + Const.badgeViewSize.height / 2
+                                safeYPoint = totalBarSize + totalSpacing + Const.badgeViewSize.height / 2
                             }
                             let safeLocation: CGPoint = .init(x: safeXPoint, y: safeYPoint)
                             
