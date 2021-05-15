@@ -19,6 +19,7 @@ final public class LineChartModel: ObservableObject, Identifiable {
     @Published public var showLineWhenFilled: Bool
     @Published public var pointColor: Color
     @Published public var dashOfLine: [CGFloat]
+    @Published public var isBadgeViewEnabled: Bool
     @Published public var badgeViewModel: BadgeValueModel
     
     public init(data: [CGFloat],
@@ -30,10 +31,8 @@ final public class LineChartModel: ObservableObject, Identifiable {
                 fillWithLinearGradient: LinearGradient? = nil,
                 showLineWhenFilled: Bool,
                 dashOfLine: [CGFloat] = [],
-                badgeViewModel: BadgeValueModel = BadgeValueModel(showUnderline: true,
-                                                                  underlineColor: .red,
-                                                                  title: "12121",
-                                                                  foregroundColor: .red)) {
+                isBadgeViewEnabled: Bool = false,
+                badgeViewModel: BadgeValueModel = BadgeValueModel()) {
         self.data = data
         self.calculationStyle = calculationStyle
         self.lineWidth = lineWidth
@@ -43,6 +42,7 @@ final public class LineChartModel: ObservableObject, Identifiable {
         self.showLineWhenFilled = showLineWhenFilled
         self.pointColor = pointColor
         self.dashOfLine = dashOfLine
+        self.isBadgeViewEnabled = isBadgeViewEnabled
         self.badgeViewModel = badgeViewModel
     }
 }

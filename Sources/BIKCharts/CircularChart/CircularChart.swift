@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-public struct CircularChart: View {
+struct CircularChart: View {
     // TODO: Convert default color to ColorSet
     private enum Const {
         static let circleWholeAreaRate: CGFloat = 0.5

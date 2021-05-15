@@ -29,8 +29,11 @@ public struct LineChart: View {
     //isBadgeAppeared using for set first position of badgeValueView
     @State private var isBadgeAppeared: Bool = false
     
-    public init(with viewModel: LineChartModel) {
+    private let dragAction: BarChart.DragGestureAction?
+    
+    public init(with viewModel: LineChartModel, dragAction: BarChart.DragGestureAction? = nil) {
         self.viewModel = viewModel
+        self.dragAction = dragAction
     }
     
     // MARK: - Body
@@ -38,14 +41,20 @@ public struct LineChart: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack {
-                getDraggableView(content: {
+                if viewModel.isBadgeViewEnabled || dragAction.isNotNil {
+                    getDraggableView(content: {
+                        getGradientOverlayIfNeeded()
+                            .overlay(getLineOverlayIfNeeded())
+                            .overlay(getPointOverlayIfNeeded())
+                    }, proxy: proxy)
+                    if viewModel.isBadgeViewEnabled {
+                        getBadgeValueView(with: proxy)
+                    }
+                } else {
                     getGradientOverlayIfNeeded()
                         .overlay(getLineOverlayIfNeeded())
                         .overlay(getPointOverlayIfNeeded())
-                    //                if viewModel.$badgeViewModel {
-                    getBadgeValueView(with: proxy)
-                    //                }
-                }, proxy: proxy)
+                }
             }
         }
     }
@@ -73,7 +82,6 @@ private extension LineChart {
         }
     }
     
-    //TODO: Fix naming of this func
     func getGradientOverlayIfNeeded() -> some View {
         getLinePath(shouldFill: true)
             .fill((animateGradientLayer && viewModel.fillWithLinearGradient.isNotNil) ?
@@ -127,13 +135,9 @@ private extension LineChart {
                             
                             let pointSpace = (proxy.width - viewModel.lineWidth) / CGFloat(viewModel.data.count-1)
                             let index = Int((dragGesture.location.x) / pointSpace)
-                            
-//                            let index: Int = Int(floor((dragGesture.location.x) / CGFloat((viewModel.data.count-1))))
-//                            let safeIndex = index < .zero ? .zero : min(index, viewModel.data.count-1)
-                            
+                                                        
                             let xDot = CGFloat(index) * (proxy.width / CGFloat(viewModel.data.count-1))
                             var yDot = scalableHeight(for: viewModel.data[index], parentHeight: proxy.height)
-//                            let safeLocation: CGPoint = .init(x: xDot, y: yDot)
                             withAnimation {
                                 badgeViewDirection = yDot > proxy.height / 2 ? .bottom : .top
                             }
@@ -142,10 +146,9 @@ private extension LineChart {
                             withAnimation {
                                 badgeViewLocation = .init(x: xDot, y: yDot)
                             }
-                            showBadgeView = true //viewModel.isBadgeViewEnabled
-                            isBadgeAppeared = true // viewModel.isBadgeViewEnabled
-//                            dragAction?(viewModel.data[safeIndex])
-                            print(xDot)
+                            showBadgeView = viewModel.isBadgeViewEnabled
+                            isBadgeAppeared = viewModel.isBadgeViewEnabled
+                            dragAction?(viewModel.data[index])
                         }.onEnded( {dragGesture in
                             showBadgeView = false
                         }))

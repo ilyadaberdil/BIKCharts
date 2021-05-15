@@ -14,7 +14,7 @@ public struct SampleChartApp: View {
                 VStack(alignment: .center, spacing: 24) {
                     barChartButton
                     lineChartButton
-                    circularChartButton
+//                    circularChartButton
                     pieChartButton
                 }
                 .navigationBarTitle("Charts", displayMode: .large)

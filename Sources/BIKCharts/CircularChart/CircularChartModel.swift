@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-final public class CircularChartModel: ObservableObject, Identifiable {
+final class CircularChartModel: ObservableObject, Identifiable {
     
     @Published public var data: [ChartSliceDataModel]
     @Published public var calculationStyle: CalculationStyle
