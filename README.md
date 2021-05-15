@@ -87,7 +87,7 @@ That's all 🎉 </br>
 If you want to implement your custom dragAction, you can use this callBack;
 ```swift
 LineChart(with: model, dragAction: { (value) in
-print(value)
+  print(value)
 })
 .frame(height: 120)
 ```
@@ -133,7 +133,7 @@ That's all 🎉 </br>
 If you want to implement your custom tapAction, you can use this callBack;
 ```swift
 PieChart(viewModel: model, tapAction: { (data) in
-    print(data)
+  print(data)
 })
 .frame(height: 250)
 ```
