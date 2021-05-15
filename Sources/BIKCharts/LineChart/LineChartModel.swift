@@ -31,7 +31,7 @@ final public class LineChartModel: ObservableObject, Identifiable {
                 fillWithLinearGradient: LinearGradient? = nil,
                 showLineWhenFilled: Bool,
                 dashOfLine: [CGFloat] = [],
-                isBadgeViewEnabled: Bool = false,
+                isBadgeViewEnabled: Bool = true,
                 badgeViewModel: BadgeValueModel = BadgeValueModel()) {
         self.data = data
         self.calculationStyle = calculationStyle
