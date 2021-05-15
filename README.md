@@ -2,7 +2,8 @@
 
 BIKCharts is a new chart framework for iOS +13. 
 There are different types of Charts like BarChart, LineChart, PieChart. There are lots of configurable options for these charts.
-All chart models are ObservableObject and these properties have publisher. So you can easily change your model dynamically.
+</br>
+##### Tip: All chart models are ObservableObject and these properties have publisher. So you can easily change your model dynamically.
 
 * Pure SwiftUI
 * Dynamic
