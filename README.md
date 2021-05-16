@@ -12,17 +12,17 @@ There are different types of Charts like BarChart, LineChart, PieChart. There ar
 * Configurable
 * Easy to implement and use
 
-### Requirement
+## Requirement
 
 * iOS +13
 
-### Installation
+## Installation
 
 
 Use Swift Package Manager and add package dependency (File > Swift Packages > Add Package Dependency...) </br>
 https://github.com/ilyadaberdil/BIKCharts.git
 
-### Usage
+## Usage
 
 #### BarCharts
 
@@ -145,3 +145,11 @@ PieChart(viewModel: model, tapAction: { (data) in
 
 
 
+
+## Author
+Berdil İlyada Karacam </br>
+ilyadaberdil@gmail.com </br>
+https://www.linkedin.com/in/ilyadaberdil
+
+## License
+BIKCharts is available under the MIT license. See the LICENSE file for more info.
