@@ -16,9 +16,10 @@ There are different types of Charts like BarChart, LineChart, PieChart. There ar
 
 * iOS +13
 
-### Implementation
+### Installation
 
-Use Swift Package Manager and add package dependency </br>
+
+Use Swift Package Manager and add package dependency (File > Swift Packages > Add Package Dependency...) </br>
 https://github.com/ilyadaberdil/BIKCharts.git
 
 ### Usage
